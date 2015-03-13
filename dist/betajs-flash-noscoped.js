@@ -1,3 +1,25 @@
+/*!
+betajs-flash - v0.0.1 - 2015-03-13
+Copyright (c) Oliver Friedmann
+MIT Software License.
+*/
+(function () {
+
+var Scoped = this.subScope();
+
+Scoped.binding("module", "global:BetaJS.Flash");
+Scoped.binding("base", "global:BetaJS");
+
+Scoped.binding("jquery", "global:jQuery");
+
+Scoped.define("module:", function () {
+	return {
+		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
+		version: '1.1426286800672',
+		__global: {}
+	};
+});
+
 Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 		"base:Async", "base:Functions", "base:Types", "base:Objs", "base:Ids", "module:__global", "module:FlashObjectWrapper" ], function(Class,
 		Strings, Async, Functions, Types, Objs, Ids, moduleGlobal, FlashObjectWrapper, scoped) {
@@ -136,3 +158,84 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 		};
 	});
 });
+Scoped.define("module:Helper", ["base:Time"], function (Time) {
+	return {
+		
+		embedTemplate: function (flashFile, forceReload) {
+			if (forceReload)
+				flashFile += "?" + Time.now();
+			return ('<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">' +
+						'<param name="movie" value="' + flashFile + '" />' +
+						'<param name="quality" value="high" />' +
+						'<param name="allowScriptAccess" value="always" />' +
+						'<param name="wmode" value="opaque">' +
+						'<embed ' +
+							'src="' + flashFile + '" ' +
+							'quality="high" wmode="opaque" align="middle" play="true" loop="false" allowScriptAccess="always" ' +
+							'type="application/x-shockwave-flash" pluginspage="http://www.adobe.com/go/getflashplayer">' +
+						'</embed>' +
+					'</object>');
+		}		
+	};
+});
+Scoped.define("module:FlashClassRegistry", [ "base:Class" ], function(Class,
+		scoped) {
+	return Class.extend({
+		scoped : scoped
+	}, {
+
+		interfaces : {},
+
+		register : function(cls, methods) {
+			this.interfaces[cls] = methods;
+		},
+		
+		get: function (cls) {
+			return this.interfaces[cls] || {};
+		}
+
+	});
+});
+
+Scoped.define("module:FlashObjectWrapper", [ "base:Class", "base:Objs", "base:Functions"  ], function(Class, Objs, Functions, scoped) {
+	return Class.extend({
+		scoped : scoped
+	}, function(inherited) {
+		return {
+
+			constructor : function(embedding, objectIdent, objectType) {
+				inherited.constructor.call(this);
+				this.__embedding = embedding;
+				this.__ident = objectIdent;
+				this.__type = objectType;
+				if (embedding.__registry) {
+					Objs.iter(embedding.__registry.get(objectType), function (method) {
+						this[method] = function () {
+							var args = Functions.getArguments(arguments);
+							args.unshift(method);
+							args.unshift(this.__ident);
+							return this.__embedding.flashCall.apply(this.__embedding, args);
+						};
+						this[method + "Void"] = function () {
+							var args = Functions.getArguments(arguments);
+							args.unshift(method);
+							args.unshift(this.__ident);
+							return this.__embedding.flashCallVoid.apply(this.__embedding, args);
+						};
+					}, this);
+				}
+			},
+			
+			destroy: function () {
+				this.__embedding.flashDestroy(this.__ident);
+				inherited.destroy.call(this);
+			},
+			
+			addEventListener: function (ev, cb) {
+				return this.__embedding.flashAddEventListener.call(this.__embedding, this.__ident, ev, cb);
+			}
+
+		};
+	});
+});
+}).call(Scoped);

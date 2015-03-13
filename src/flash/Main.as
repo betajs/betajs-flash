@@ -15,13 +15,13 @@ package
     	
     	private var instanceId: int = 0;
     	
-    	private function newInstanceString(): String {
+    	private function newInstanceString(typeName: String): String {
 		    var chars: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
    		    var result: String = "";
 		    for (var i: int = 0; i < 8; i++)
 		    	result += chars.charAt(Math.floor(Math.random() * (chars.length - 1)));
 		    instanceId++;
-		    return "__FLASHOBJ__" + result + "__" + instanceId;
+		    return "__FLASHOBJ__" + typeName + "__" + result + "__" + instanceId;
 		}
 		
 		private function serializeError(error: Error): String {
@@ -52,7 +52,8 @@ package
         		return result;
         	} else if (typeof(value) == "object") {
         		if (!instanceToString.hasOwnProperty(value)) {
-        			var instanceString: String = newInstanceString();
+        			var cls: String = value == this ? flash.utils.getQualifiedSuperclassName(value) : flash.utils.getQualifiedClassName(value)
+        			var instanceString: String = newInstanceString(cls);
         			instanceToString[value] = instanceString;
         			stringToInstance[instanceString] = value;
         			return instanceString;

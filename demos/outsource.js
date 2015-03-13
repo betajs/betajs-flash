@@ -5,7 +5,7 @@
 					callback: true,
 					callbackCtx: "object",
 					interval: "int"
-				});console.log(args);
+				});
 				var h = function () {
 					try {
 						return !!args.condition.apply(args.conditionCtx || args.callbackCtx || this);

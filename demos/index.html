@@ -8,103 +8,31 @@
 		<script src="../dist/betajs-flash.js"></script>
 	</head>
 	<body>
-		<script type="text/template" id="template">
-			<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
-			codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
-	
-				<param name="movie" value="../dist/betajs-flash.swf?{%= BetaJS.Time.now() %}" />
-				<param name="quality" value="high" />
-				<param name="allowScriptAccess" value="always" />
-				<param name="wmode" value="opaque">
-	
-				<embed
-				src="../dist/betajs-flash.swf?{%= BetaJS.Time.now() %}"
-				quality="high"
-				wmode="opaque"
-				align="middle"
-				play="true"
-				loop="false"
-				allowScriptAccess="always"
-				type="application/x-shockwave-flash"
-				pluginspage="http://www.adobe.com/go/getflashplayer"
-				>
-				</embed>
-			</object>
-		</script>
 		<script>
-			
-			/*
-			Scoped.define("module:FlashClassRegistry", ["betajs:Class"], function (Class, scoped) {
-				return Class.extend({scoped: scoped}, {
+			var registry = new BetaJS.Flash.FlashClassRegistry();
+			registry.register("flash.media.Video", ["attachNetStream"]);
+			registry.register("flash.display.Sprite", ["addChild"]);
+			registry.register("flash.net.NetStream", ["play"]);
+			registry.register("flash.net.NetConnection", ["connect"]);
 
-					interfaces: {},
-					
-					register: function (cls, methods) {
-						this.interfaces[cls] = methods;
-					}
-
-				});
+			$("body").html(BetaJS.Flash.Helper.embedTemplate("../dist/betajs-flash.swf", true));
+			var embedding = new BetaJS.Flash.FlashEmbedding($("embed").get(0), {
+				registry: registry,
+				wrap: true
 			});
-			
-
-			
-			
-			Scoped.define("module:FlashWrapper", [
-				"betajs:Class",
-				"betajs:Strings",
-				"betajs:Async",
-				"betajs:Functions",
-				"betajs:Types"				
-			], function (Class, Strings, Async, Functions, Types, scoped) {
-				return Class.extend({scoped: scoped}, function (inherited) {
-					return {
-					
-						constructor: function (embedding, registry) {
-							inherited.constructor.call(this);
-							this.__embedding = embedding;
-							this.__registry = registry;
-						},
 						
-						createObject: function () {
-						}
-					
-					};
-				});
-			});
-						*/
-			
-			
-		
-			$("body").html((new BetaJS.Templates.Template($("#template").html())).evaluate());
-			window.flash = $("embed").get(0);
-			var embedding = new BetaJS.Flash.FlashEmbedding(window.flash);
-			var video, connection, stream;
-			function connection_event_listener(event) {
-				stream = flash.create("flash.net.NetStream", connection);
-				console.log("yeah");
-				flash.call_void(video, "attachNetStream", stream);
-				flash.call_void(stream, "play", "abc.flv");
-			}
 			embedding.ready(function () {
-				video = embedding.flashCreate("flash.media.Video", 500, 500);
-				embedding.flashCallVoid(embedding.flashMain(), "addChild", video);
-				connection = flash.create("flash.net.NetConnection");
-				flash.add_event_listener(connection, "netStatus", "connection_event_listener");
-				flash.call_void(connection, "connect", "rtmp://localhost:1935/vodtest/_definst_");
+				var main = embedding.flashMain();
+				var video = embedding.newObject("flash.media.Video", 500, 500);
+				main.addChildVoid(video);
+				var connection = embedding.newObject("flash.net.NetConnection");
+				connection.addEventListener("netStatus", function () {
+					var stream = embedding.newObject("flash.net.NetStream", connection);
+					video.attachNetStreamVoid(stream);
+					stream.playVoid("abc.flv");
+				});
+				connection.connectVoid("rtmp://localhost:1935/vodtest/_definst_");
 			});
-			
-			/*registry.register("flash.net.NetConnection", ["connect"]);
-			
-			
-			video = new FlashObject(flash, "flash.media.Video", 500, 500);
-			stage.addChild(video);
-			connection = new FlashObject(flash, "flash.net.NetConnection");
-			connection.addEventListener("netStatus", function () {
-				stream = flash.create("flash.net.Stream", connection);
-				video.attachNetStream(stream);
-				stream.play("abc.flv");
-			});
-			connection.connect("rtmp://localhost:1935/vodtest/_definst_");*/
 		</script>
 	</body>
 </html>
