@@ -1,0 +1,15 @@
+(function () {
+
+var Scoped = this.subScope();
+
+Scoped.binding("module", "global:BetaJS.Flash");
+Scoped.binding("base", "global:BetaJS");
+
+Scoped.binding("jquery", "global:jQuery");
+
+Scoped.define("module:", function () {
+	return {
+		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
+		version: '/* @echo MAJOR_VERSION */./* @echo MINOR_VERSION */'
+	};
+});
