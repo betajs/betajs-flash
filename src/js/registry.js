@@ -6,12 +6,15 @@ Scoped.define("module:FlashClassRegistry", [ "base:Class" ], function(Class,
 
 		interfaces : {},
 
-		register : function(cls, methods) {
-			this.interfaces[cls] = methods;
+		register : function(cls, methods, statics) {
+			this.interfaces[cls] = {
+				methods: methods || {},
+				statics: statics || {}
+			};
 		},
 		
 		get: function (cls) {
-			return this.interfaces[cls] || {};
+			return this.interfaces[cls];
 		}
 
 	});

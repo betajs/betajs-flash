@@ -1,6 +1,6 @@
 Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
-		"base:Async", "base:Functions", "base:Types", "base:Objs", "base:Ids", "module:__global", "module:FlashObjectWrapper" ], function(Class,
-		Strings, Async, Functions, Types, Objs, Ids, moduleGlobal, FlashObjectWrapper, scoped) {
+		"base:Async", "base:Functions", "base:Types", "base:Objs", "base:Ids", "module:__global", "module:FlashObjectWrapper", "module:FlashClassWrapper" ], function(Class,
+		Strings, Async, Functions, Types, Objs, Ids, moduleGlobal, FlashObjectWrapper, FlashClassWrapper, scoped) {
 	return Class.extend({
 		scoped : scoped
 	}, function(inherited) {
@@ -15,12 +15,16 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 				this.__cache = {};
 				this.__callbacks = {};
 				this.__wrappers = {};
+				this.__staticWrappers = {};
 				moduleGlobal[this.cid()] = this.__callbacks;
 			},
 			
 			destroy: function () {
 				delete moduleGlobal[this.cid()];
 				Objs.iter(this.__wrappers, function (wrapper) {
+					wrapper.destroy();
+				});
+				Objs.iter(this.__staticWrappers, function (wrapper) {
 					wrapper.destroy();
 				});
 				inherited.destroy.call(this);
@@ -47,6 +51,8 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 				}
 				if (FlashObjectWrapper.is_instance_of(value))
 					value = value.__ident;
+				if (FlashClassWrapper.is_instance_of(value))
+					value = value.__type;
 				return value;
 			},
 
@@ -75,6 +81,14 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 				if (!(key in this.__cache))
 					this.__cache[key] = this.invoke.call(this, method, args);
 				return this.__cache[key];
+			},
+			
+			getClass: function (className) {
+				if (!this.__wrap)
+					return null;
+				if (!(className in this.__staticWrappers))
+					this.__staticWrappers[className] = new FlashClassWrapper(this, className);
+				return this.__staticWrappers[className];
 			},
 			
 			newObject: function () {

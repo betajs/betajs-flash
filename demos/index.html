@@ -4,7 +4,6 @@
 		<script src="assets/jquery-1.9.1.min.js"></script>
 		<script src="assets/beta.js"></script>
 		<script src="assets/beta-browser.js"></script>
-		<script src="outsource.js"></script>
 		<script src="../dist/betajs-flash.js"></script>
 	</head>
 	<body>
@@ -15,7 +14,10 @@
 			registry.register("flash.net.NetStream", ["play"]);
 			registry.register("flash.net.NetConnection", ["connect"]);
 
-			$("body").html(BetaJS.Flash.Helper.embedTemplate("../dist/betajs-flash.swf", true));
+			$("body").html(BetaJS.Flash.Helper.embedTemplate({
+				flashFile: "../dist/betajs-flash.swf",
+				forceReload: true
+			}));
 			var embedding = new BetaJS.Flash.FlashEmbedding($("embed").get(0), {
 				registry: registry,
 				wrap: true
