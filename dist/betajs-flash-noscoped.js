@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.1 - 2015-03-15
+betajs-flash - v0.0.1 - 2015-03-18
 Copyright (c) Oliver Friedmann
 MIT Software License.
 */
@@ -15,7 +15,7 @@ Scoped.binding("jquery", "global:jQuery");
 Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		version: '2.1426472817574',
+		version: '3.1426706803693',
 		__global: {}
 	};
 });
@@ -175,7 +175,9 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 Scoped.define("module:Helper", ["base:Time", "base:Objs"], function (Time, Objs) {
 	return {
 		
-		options: {},
+		options: {
+			flashFile: "betajs-flash.swf"
+		},
 		
 		embedTemplate: function (options) {
 			options = Objs.extend(Objs.clone(this.options, 1), options);
@@ -374,11 +376,11 @@ Scoped.define("module:FlashClassWrapper", [ "base:Class", "base:Objs", "base:Fun
 			},
 			
 			set: function (key, value) {
-				return this.__embedding.flashStaticSet.call(this.__embedding, this.__type, key, value);
+				return this.__embedding.flashSetStatic.call(this.__embedding, this.__type, key, value);
 			},
 
 			get: function (key) {
-				return this.__embedding.flashStaticGet.call(this.__embedding, this.__type, key);
+				return this.__embedding.flashGetStatic.call(this.__embedding, this.__type, key);
 			}
 
 		};

@@ -78,11 +78,11 @@ Scoped.define("module:FlashClassWrapper", [ "base:Class", "base:Objs", "base:Fun
 			},
 			
 			set: function (key, value) {
-				return this.__embedding.flashStaticSet.call(this.__embedding, this.__type, key, value);
+				return this.__embedding.flashSetStatic.call(this.__embedding, this.__type, key, value);
 			},
 
 			get: function (key) {
-				return this.__embedding.flashStaticGet.call(this.__embedding, this.__type, key);
+				return this.__embedding.flashGetStatic.call(this.__embedding, this.__type, key);
 			}
 
 		};

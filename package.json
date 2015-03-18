@@ -1,24 +1,28 @@
 {
-  "name": "betajs-flash",
-  "version": "0.0.1",
-  "description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
-  "homepage": "http://betajs.com",
-  "contributors": [
-  	"Oliver Friedmann"
-  ],
-  "license": "MIT",
-  "devDependencies": {
-    "grunt": "",
-    "grunt-contrib-jshint": "",
-    "grunt-contrib-nodeunit": "",
-    "grunt-contrib-concat": "",
-    "grunt-contrib-uglify": "",
-    "grunt-shell": "",
-    "grunt-contrib-sass": "",
-    "grunt-contrib-cssmin": "",
-    "grunt-contrib-clean": "",
-    "grunt-newer": "",
-    "grunt-preprocess": "",
-    "grunt-git-revision-count": ""
-  }
+	"name": "betajs-flash",
+	"version": "0.0.1",
+	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
+	"homepage": "http://betajs.com",
+	"contributors": ["Oliver Friedmann"],
+	"license": "MIT",
+	"devDependencies": {
+		"grunt": "",
+		"grunt-contrib-jshint": "",
+		"grunt-contrib-nodeunit": "",
+		"grunt-contrib-concat": "",
+		"grunt-contrib-uglify": "",
+		"grunt-shell": "",
+		"grunt-contrib-sass": "",
+		"grunt-contrib-cssmin": "",
+		"grunt-contrib-clean": "",
+		"grunt-newer": "",
+		"grunt-preprocess": "",
+		"grunt-git-revision-count": "",
+		"grunt-closure-tools": "",
+		"grunt-wget": ""
+	},
+	"repository": {
+		"type": "git",
+		"url": "git://github.com/betajs/betajs-flash.git"
+	}
 }

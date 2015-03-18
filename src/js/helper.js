@@ -1,7 +1,9 @@
 Scoped.define("module:Helper", ["base:Time", "base:Objs"], function (Time, Objs) {
 	return {
 		
-		options: {},
+		options: {
+			flashFile: "betajs-flash.swf"
+		},
 		
 		embedTemplate: function (options) {
 			options = Objs.extend(Objs.clone(this.options, 1), options);

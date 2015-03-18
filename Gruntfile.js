@@ -42,7 +42,7 @@ module.exports = function(grunt) {
 			    dest : 'dist/betajs-flash-noscoped.js'
 			}
 		},	
-		clean: ["dist/betajs-flash-raw.js"],
+		clean: ["dist/betajs-flash-raw.js", "dist/betajs-flash-closure.js"],
 		uglify : {
 			options : {
 				banner : module.banner
@@ -65,6 +65,14 @@ module.exports = function(grunt) {
             		"src/*/*.js"
             	]
 			},
+			lintfinal : {
+				command : "jsl --process ./dist/betajs-flash.js",
+				options : {
+					stdout : true,
+					stderr : true,
+				},
+				src : [ "src/*/*.js" ]
+			},
 			flash: {
 		    	command: 'mxmlc Main.as -static-link-runtime-shared-libraries -output ../../dist/betajs-flash.swf',
 		    	options: {
@@ -78,6 +86,32 @@ module.exports = function(grunt) {
             		"src/flash/*.as"
             	]
 			}
+		},
+		closureCompiler : {
+			options : {
+				compilerFile : process.env.CLOSURE_PATH
+						+ "/compiler.jar",
+				compilerOpts : {
+					compilation_level : 'ADVANCED_OPTIMIZATIONS',
+					warning_level : 'verbose',
+					externs : [ "./src/fragments/closure.js-fragment" ]
+				}
+			},
+			dist : {
+				src : ["./vendors/beta.js", "./dist/betajs-flash-noscoped.js"],
+				dest : "./dist/betajs-flash-closure.js"
+			}
+		},
+		wget : {
+			dependencies : {
+				options : {
+					overwrite : true
+				},
+				files : {
+					"./vendors/scoped.js" : "https://raw.githubusercontent.com/betajs/betajs-scoped/master/dist/scoped.js",
+					"./vendors/beta.js" : "https://raw.githubusercontent.com/betajs/betajs/master/dist/beta.js"
+				}
+			}
 		}
 	});
 
@@ -88,10 +122,13 @@ module.exports = function(grunt) {
 	grunt.loadNpmTasks('grunt-git-revision-count');
 	grunt.loadNpmTasks('grunt-preprocess');
 	grunt.loadNpmTasks('grunt-contrib-clean');	
-	
+	grunt.loadNpmTasks('grunt-wget');
+	grunt.loadNpmTasks('grunt-closure-tools');
 
 	grunt.registerTask('default', ['revision-count', 'concat:dist_raw', 'preprocess', 'clean', 'concat:dist_scoped', 'uglify', 'shell:flash']);
-	grunt.registerTask('lint', ['shell:lint']);	
+	grunt.registerTask('lint', ['shell:lint', 'shell:lintfinal']);	
 	grunt.registerTask('check', ['lint']);
+	grunt.registerTask('dependencies', [ 'wget:dependencies' ]);
+	grunt.registerTask('closure', [ 'closureCompiler', 'clean' ]);
 
 };
