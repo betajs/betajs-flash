@@ -15,6 +15,13 @@ package
     	
     	private var instanceId: int = 0;
     	
+    	private function jsonEncode(object: Object): Object {
+			var encoded: Object = new Object();
+			for (var key: * in object)
+				encoded[key] = object[key];
+			return encoded;
+    	}
+    	
     	private function newInstanceString(typeName: String): String {
 		    var chars: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
    		    var result: String = "";
@@ -40,6 +47,7 @@ package
         	ExternalInterface.addCallback("get_static", get_static);
         	ExternalInterface.addCallback("set_static", set_static);
         	ExternalInterface.addCallback("add_event_listener", add_event_listener);
+        	ExternalInterface.addCallback("create_callback_object", create_callback_object);        	
         	// Should be last.
         	ExternalInterface.addCallback("main", main);
         }
@@ -183,6 +191,20 @@ package
         	try {
 	        	var myClass: Class = getDefinitionByName(className) as Class;
 	        	myClass[attrName] = unserialize(attrValue);
+        	} catch(error: Error) {
+        		return serializeError(error);
+        	}
+        	return null;
+        }
+        
+        public function create_callback_object(method: String, callback: String): String {
+			try {
+				var object: Object = new Object();
+				object[method] = function (argument: Object): void {
+					ExternalInterface.call(callback, jsonEncode(argument));
+				};
+				var result: * = serialize(object);;
+				return result;
         	} catch(error: Error) {
         		return serializeError(error);
         	}

@@ -552,7 +552,7 @@ Scoped.binding("jquery", "global:jQuery");
 Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		version: '3.1426706803693',
+		version: '4.1426716096688',
 		__global: {}
 	};
 });
@@ -618,13 +618,16 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 			unserialize : function(value) {
 				if (Types.is_string(value) && Strings.starts_with(value, "__FLASHERR__"))
 					throw Strings.strip_start(value, "__FLASHERR__");
-				 if (Types.is_string(value) && this.__wrap && Strings.starts_with(value, "__FLASHOBJ__")) {
-					if (!(value in this.__wrappers)) {
+				 if (Types.is_string(value) && Strings.starts_with(value, "__FLASHOBJ__")) {
+					 if (this.__wrap) {
 						var type = Strings.strip_start(value, "__FLASHOBJ__");
 						type = Strings.splitFirst(type, "__").head.replace("::", ".");
-						this.__wrappers[value] = new FlashObjectWrapper(this, value, type);
-					}
-					return this.__wrappers[value];
+						if (type.toLowerCase() != "object") {
+							if (!(value in this.__wrappers))
+								this.__wrappers[value] = new FlashObjectWrapper(this, value, type);
+							return this.__wrappers[value];
+						}
+					 }
 				}
 				return value;
 			},
@@ -654,11 +657,19 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 				return this.flashCreate.apply(this, arguments);
 			},
 			
+			newCallback: function () {
+				return this.flashCreateCallbackObject.apply(this, arguments);
+			},
+			
+			flashCreateCallbackObject : function() {
+				return this.invoke("create_callback_object", arguments);
+			},
+			
 			flashCreate : function() {
 				return this.invoke("create", arguments);
 			},
 
-			flashDestroy : function (obj) {
+			flashDestroy : function () {
 				return this.invoke("destroy", arguments);
 			},
 

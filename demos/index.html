@@ -21,7 +21,7 @@
 				registry: registry,
 				wrap: true
 			});
-						
+			
 			embedding.ready(function () {
 				var main = embedding.flashMain();
 				var video = embedding.newObject("flash.media.Video", 500, 500);
@@ -29,10 +29,19 @@
 				var connection = embedding.newObject("flash.net.NetConnection");
 				connection.addEventListener("netStatus", function () {
 					var stream = embedding.newObject("flash.net.NetStream", connection);
+					
+					stream.set("client", embedding.newCallback("onMetaData", function (info) {
+						console.log(info);
+					}));
+					
 					video.attachNetStreamVoid(stream);
-					stream.playVoid("abc.flv");
+					stream.playVoid(document.location + "/../movie.mp4");
+
+					//stream.playVoid("abc.flv");
 				});
-				connection.connectVoid("rtmp://localhost:1935/vodtest/_definst_");
+				connection.connectVoid(null);
+
+				//connection.connectVoid("rtmp://localhost:1935/vodtest/_definst_");
 			});
 		</script>
 	</body>
