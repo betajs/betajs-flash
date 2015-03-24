@@ -1,22 +1,33 @@
-Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
-		"base:Async", "base:Functions", "base:Types", "base:Objs", "base:Ids", "module:__global", "module:FlashObjectWrapper", "module:FlashClassWrapper" ], function(Class,
-		Strings, Async, Functions, Types, Objs, Ids, moduleGlobal, FlashObjectWrapper, FlashClassWrapper, scoped) {
+Scoped.define("module:FlashEmbedding", [ "base:Class", "jquery:", "base:Strings",
+		"base:Functions", "base:Types", "base:Objs", "base:Ids", "base:Async", "module:__global",
+		"module:FlashObjectWrapper", "module:FlashClassWrapper", "module:Helper" ], function(Class, $,
+		Strings, Functions, Types, Objs, Ids, Async, moduleGlobal, FlashObjectWrapper, FlashClassWrapper, FlashHelper, scoped) {
 	return Class.extend({
 		scoped : scoped
 	}, function(inherited) {
 		return {
 
-			constructor : function(embedding, options) {
+			constructor : function(container, options, flashOptions) {
 				inherited.constructor.call(this);
-				this.__embedding = embedding;
 				options = options || {};
 				this.__registry = options.registry;
 				this.__wrap = options.wrap;
 				this.__cache = {};
-				this.__callbacks = {};
+				this.__callbacks = {
+					ready: Functions.as_method(this.__ready, this)
+				};
+				this.__namespace = "BetaJS.Flash.__global." + this.cid();
+				this.__is_ready = false;
+				this.__ready_queue = [];
 				this.__wrappers = {};
 				this.__staticWrappers = {};
 				moduleGlobal[this.cid()] = this.__callbacks;
+				flashOptions = Objs.extend({
+					FlashVars: {}
+				}, flashOptions);
+				flashOptions.FlashVars.ready = this.__namespace + ".ready";
+				$(container).html(FlashHelper.embedTemplate(flashOptions));
+				this.__embedding = $(container).find("embed").get(0);
 			},
 			
 			destroy: function () {
@@ -47,7 +58,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 					value = this.registerCallback(value);
 				if (Types.is_string(value)) {
 					if (Strings.starts_with(value, "__FLASHCALLBACK__"))
-						value = "BetaJS.Flash.__global." + this.cid() + "." + value;
+						value = this.__namespace + "." + value;
 				}
 				if (FlashObjectWrapper.is_instance_of(value))
 					value = value.__ident;
@@ -74,6 +85,8 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 			},
 
 			invoke : function(method, args) {
+				if (!this.__is_ready)
+					throw "Flash is not ready yet";
 				args = args || [];
 				return this.unserialize(this.__embedding[method].apply(this.__embedding, this.serialize(Functions.getArguments(args))));
 			},
@@ -153,9 +166,29 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Strings",
 			flashMain : function() {
 				return this.invokeCached("main");
 			},
+			
+			__ready: function () {
+				if (!this.__is_ready) {
+					this.__is_ready = true;
+					Async.eventually(function () {
+						Objs.iter(this.__ready_queue, function (entry) {
+							entry.callback.call(entry.context || this);
+						}, this);
+					}, this);
+				}
+			},
 
 			ready : function(callback, context) {
-				Async.waitFor(this.flashMain, this, callback, context);
+				if (this.__is_ready) {
+					Async.eventually(function () {
+						callback.call(context || this);
+					}, this);
+				} else {
+					this.__ready_queue.push({
+						callback: callback,
+						context: context
+					});
+				}
 			}
 
 		};

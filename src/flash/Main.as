@@ -15,6 +15,8 @@ package
     	
     	private var instanceId: int = 0;
     	
+    	private var flashVars: Object = null;
+    	
     	private function jsonEncode(object: Object): Object {
 			var encoded: Object = new Object();
 			for (var key: * in object)
@@ -48,8 +50,13 @@ package
         	ExternalInterface.addCallback("set_static", set_static);
         	ExternalInterface.addCallback("add_event_listener", add_event_listener);
         	ExternalInterface.addCallback("create_callback_object", create_callback_object);        	
-        	// Should be last.
         	ExternalInterface.addCallback("main", main);
+        	flashVars = LoaderInfo(root.loaderInfo).parameters;
+        	if (flashVars.hasOwnProperty("ready")) {
+	        	setTimeout(function ():void {
+	        		ExternalInterface.call(flashVars.ready);
+	        	}, 0);        	
+        	}
         }
         
         public function serialize(value: *): * {

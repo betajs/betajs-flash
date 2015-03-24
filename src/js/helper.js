@@ -1,4 +1,4 @@
-Scoped.define("module:Helper", ["base:Time", "base:Objs"], function (Time, Objs) {
+Scoped.define("module:Helper", ["base:Time", "base:Objs", "base:Types", "base:Net.Uri"], function (Time, Objs, Types, Uri) {
 	return {
 		
 		options: {
@@ -81,7 +81,7 @@ Scoped.define("module:Helper", ["base:Time", "base:Objs"], function (Time, Objs)
 				params.push({
 					"objectParam": "FlashVars",
 					"embedKey": "FlashVars",
-					"value": options.FlashVars
+					"value": Types.is_object(options.FlashVars) ? Uri.encodeUriParams(options.FlashVars) : options.FlashVars
 				});
 			}
 			var objectKeys = [];

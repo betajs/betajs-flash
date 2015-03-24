@@ -13,13 +13,12 @@
 			registry.register("flash.net.NetStream", ["play"]);
 			registry.register("flash.net.NetConnection", ["connect"]);
 
-			$("body").html(BetaJS.Flash.Helper.embedTemplate({
-				flashFile: "../dist/betajs-flash.swf",
-				forceReload: true
-			}));
-			var embedding = new BetaJS.Flash.FlashEmbedding($("embed").get(0), {
+			var embedding = new BetaJS.Flash.FlashEmbedding(document.body, {
 				registry: registry,
 				wrap: true
+			}, {
+				flashFile: "../dist/betajs-flash.swf",
+				forceReload: true
 			});
 			
 			embedding.ready(function () {
@@ -31,7 +30,7 @@
 					var stream = embedding.newObject("flash.net.NetStream", connection);
 					
 					stream.set("client", embedding.newCallback("onMetaData", function (info) {
-						console.log(info);
+						$("body").append("<p>" + JSON.stringify(info) + "</p>");
 					}));
 					
 					video.attachNetStreamVoid(stream);
