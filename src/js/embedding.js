@@ -1,7 +1,7 @@
 Scoped.define("module:FlashEmbedding", [ "base:Class", "jquery:", "base:Strings",
 		"base:Functions", "base:Types", "base:Objs", "base:Ids", "base:Async", "module:__global",
-		"module:FlashObjectWrapper", "module:FlashClassWrapper", "module:Helper" ], function(Class, $,
-		Strings, Functions, Types, Objs, Ids, Async, moduleGlobal, FlashObjectWrapper, FlashClassWrapper, FlashHelper, scoped) {
+		"module:FlashObjectWrapper", "module:FlashClassWrapper", "base:Browser.FlashHelper", "module:" ], function(Class, $,
+		Strings, Functions, Types, Objs, Ids, Async, moduleGlobal, FlashObjectWrapper, FlashClassWrapper, FlashHelper, mod, scoped) {
 	return Class.extend({
 		scoped : scoped
 	}, function(inherited) {
@@ -22,12 +22,11 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "jquery:", "base:Strings"
 				this.__wrappers = {};
 				this.__staticWrappers = {};
 				moduleGlobal[this.cid()] = this.__callbacks;
-				flashOptions = Objs.extend({
+				flashOptions = Objs.extend(Objs.clone(mod.options, 1), Objs.extend({
 					FlashVars: {}
-				}, flashOptions);
+				}, flashOptions));
 				flashOptions.FlashVars.ready = this.__namespace + ".ready";
-				$(container).html(FlashHelper.embedTemplate(flashOptions));
-				this.__embedding = $(container).find("embed").get(0);
+				this.__embedding = FlashHelper.embedFlashObject(container, flashOptions);
 			},
 			
 			destroy: function () {

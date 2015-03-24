@@ -11,6 +11,9 @@ Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
 		version: '/* @echo MAJOR_VERSION */./* @echo MINOR_VERSION */',
-		__global: {}
+		__global: {},
+		options: {
+			flashFile: "betajs-flash.swf"
+		}
 	};
 });
