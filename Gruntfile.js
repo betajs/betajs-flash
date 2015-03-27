@@ -50,29 +50,20 @@ module.exports = function(grunt) {
 			dist : {
 				files : {
 					'dist/betajs-flash-noscoped.min.js' : [ 'dist/betajs-flash-noscoped.js' ],					
-					'dist/betajs-flash.min.js' : [ 'dist/betajs-flash.js' ],					
+					'dist/betajs-flash.min.js' : [ 'dist/betajs-flash.js' ]				
 				}
 			}
 		},
+		jshint : {
+			options: {
+				es5: false,
+				es3: true
+			},
+			source : [ "./src/**/*.js"],
+			dist : [ "./dist/betajs-flash-noscoped.js", "./dist/betajs-flash.js" ],
+			gruntfile : [ "./Gruntfile.js" ]
+		},
 		shell: {
-			lint: {
-		    	command: "jsl +recurse --process ./src/*.js",
-		    	options: {
-                	stdout: true,
-                	stderr: true,
-            	},
-            	src: [
-            		"src/*/*.js"
-            	]
-			},
-			lintfinal : {
-				command : "jsl --process ./dist/betajs-flash.js",
-				options : {
-					stdout : true,
-					stderr : true,
-				},
-				src : [ "src/*/*.js" ]
-			},
 			flash: {
 		    	command: 'mxmlc Main.as -static-link-runtime-shared-libraries -output ../../dist/betajs-flash.swf',
 		    	options: {
@@ -89,12 +80,11 @@ module.exports = function(grunt) {
 		},
 		closureCompiler : {
 			options : {
-				compilerFile : process.env.CLOSURE_PATH
-						+ "/compiler.jar",
+				compilerFile : process.env.CLOSURE_PATH + "/compiler.jar",
 				compilerOpts : {
 					compilation_level : 'ADVANCED_OPTIMIZATIONS',
 					warning_level : 'verbose',
-					externs : [ "./src/fragments/closure.js-fragment" ]
+					externs : [ "./src/fragments/closure.js-fragment", "./vendors/jquery-1.9.closure-extern.js" ]
 				}
 			},
 			dist : {
@@ -111,23 +101,27 @@ module.exports = function(grunt) {
 					"./vendors/scoped.js" : "https://raw.githubusercontent.com/betajs/betajs-scoped/master/dist/scoped.js",
 					"./vendors/beta.js" : "https://raw.githubusercontent.com/betajs/betajs/master/dist/beta.js",
 					"./vendors/beta-browser-noscoped.js" : "https://raw.githubusercontent.com/betajs/betajs-browser/master/dist/beta-browser-noscoped.js",
+					"./vendors/jquery-1.9.closure-extern.js" : "https://raw.githubusercontent.com/google/closure-compiler/master/contrib/externs/jquery-1.9.js"
 				}
 			}
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-newer');
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
-	grunt.loadNpmTasks('grunt-shell');	
 	grunt.loadNpmTasks('grunt-git-revision-count');
 	grunt.loadNpmTasks('grunt-preprocess');
-	grunt.loadNpmTasks('grunt-contrib-clean');	
+	grunt.loadNpmTasks('grunt-contrib-clean');
 	grunt.loadNpmTasks('grunt-wget');
 	grunt.loadNpmTasks('grunt-closure-tools');
+	grunt.loadNpmTasks('grunt-contrib-jshint');
+	grunt.loadNpmTasks('grunt-node-qunit');
+	grunt.loadNpmTasks('grunt-jsdoc');
+	grunt.loadNpmTasks('grunt-shell');	
 
 	grunt.registerTask('default', ['revision-count', 'concat:dist_raw', 'preprocess', 'clean', 'concat:dist_scoped', 'uglify', 'shell:flash']);
-	grunt.registerTask('lint', ['shell:lint', 'shell:lintfinal']);	
+	grunt.registerTask('lint', [ 'jshint:source', 'jshint:dist',
+	                 			 'jshint:gruntfile' ]);
 	grunt.registerTask('check', ['lint']);
 	grunt.registerTask('dependencies', [ 'wget:dependencies' ]);
 	grunt.registerTask('closure', [ 'closureCompiler', 'clean' ]);
