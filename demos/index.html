@@ -7,6 +7,7 @@
 		<script src="../dist/betajs-flash.js"></script>
 	</head>
 	<body>
+	
 		<script>
 			var registry = new BetaJS.Flash.FlashClassRegistry();
 			registry.register("flash.media.Video", ["attachNetStream"]);
@@ -22,9 +23,17 @@
 				forceReload: true
 			});
 			
+//			$("embed").css("width", "640px");
+	//		$("embed").css("height", "360px");
+			$("embed").css("border", "2px solid orange");
+			
 			embedding.ready(function () {
 				var main = embedding.flashMain();
-				var video = embedding.newObject("flash.media.Video", 500, 500);
+				var stage = main.get("stage");
+				stage.set("scaleMode", "noScale");
+				stage.set("align", "TL");
+				console.log(stage.get("stageWidth"));
+				var video = embedding.newObject("flash.media.Video", stage.get("stageWidth"), stage.get("stageHeight"));
 				main.addChildVoid(video);
 				var connection = embedding.newObject("flash.net.NetConnection");
 				connection.addEventListener("netStatus", function () {
@@ -32,6 +41,13 @@
 					
 					stream.set("client", embedding.newCallback("onMetaData", function (info) {
 						$("body").append("<p>" + JSON.stringify(info) + "</p>");
+						$("embed").css("width", info.width + "px");
+						$("embed").css("height", info.height + "px");
+						setTimeout(function () {
+							video.set("width", stage.get("stageWidth"));
+							video.set("height", stage.get("stageHeight"));
+						}, 0);
+						//$("embed").css("border", "2px solid orange");
 					}));
 					
 					video.attachNetStreamVoid(stream);
