@@ -63,7 +63,7 @@ Scoped.define("module:FlashClassWrapper", [ "base:Class", "base:Objs", "base:Fun
 				this.__embedding = embedding;
 				this.__type = classType;
 				if (embedding.__registry) {
-					var lookup = embedding.__registry.get(objectType);
+					var lookup = embedding.__registry.get(classType);
 					if (lookup) {
 						Objs.iter(lookup.statics, function (method) {
 							this[method] = function () {

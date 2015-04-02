@@ -553,7 +553,7 @@ Scoped.binding("jquery", "global:jQuery");
 Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		version: '8.1427938858794',
+		version: '9.1427938913578',
 		__global: {},
 		options: {
 			flashFile: "betajs-flash.swf"
@@ -843,7 +843,7 @@ Scoped.define("module:FlashClassWrapper", [ "base:Class", "base:Objs", "base:Fun
 				this.__embedding = embedding;
 				this.__type = classType;
 				if (embedding.__registry) {
-					var lookup = embedding.__registry.get(objectType);
+					var lookup = embedding.__registry.get(classType);
 					if (lookup) {
 						Objs.iter(lookup.statics, function (method) {
 							this[method] = function () {
