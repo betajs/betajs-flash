@@ -35,10 +35,6 @@ Scoped.define("module:FlashObjectWrapper", [ "base:Class", "base:Objs", "base:Fu
 				inherited.destroy.call(this);
 			},
 			
-			addEventListener: function (ev, cb) {
-				return this.__embedding.flashAddEventListener.call(this.__embedding, this.__ident, ev, cb);
-			},
-			
 			set: function (key, value) {
 				return this.__embedding.flashSet.call(this.__embedding, this.__ident, key, value);
 			},
@@ -46,7 +42,7 @@ Scoped.define("module:FlashObjectWrapper", [ "base:Class", "base:Objs", "base:Fu
 			get: function (key) {
 				return this.__embedding.flashGet.call(this.__embedding, this.__ident, key);
 			}
-
+			
 		};
 	});
 });

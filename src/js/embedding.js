@@ -42,7 +42,10 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "jquery:", "base:Strings"
 			
 			registerCallback: function (callback, context) {
 				var value = "__FLASHCALLBACK__" + Ids.uniqueId();
-				this.__callbacks[value] = Functions.as_method(callback, context || this);
+				var self = this;
+				this.__callbacks[value] = function () {
+					callback.apply(context || self, Objs.map(Functions.getArguments(arguments), self.unserialize, self));
+				};
 				return value;
 			},
 			
@@ -111,13 +114,17 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "jquery:", "base:Strings"
 			},
 			
 			newCallback: function () {
-				return this.flashCreateCallbackObject.apply(this, arguments);
+				return Types.is_string(arguments[0]) ? this.flashCreateCallbackObject.apply(this, arguments) : this.flashCreateCallbackFunction.apply(this, arguments);
 			},
 			
 			flashCreateCallbackObject : function() {
 				return this.invoke("create_callback_object", arguments);
 			},
 			
+			flashCreateCallbackFunction : function() {
+				return this.invoke("create_callback_function", arguments);
+			},
+
 			flashCreate : function() {
 				return this.invoke("create", arguments);
 			},
@@ -156,10 +163,6 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "jquery:", "base:Strings"
 
 			flashSetStatic : function() {
 				return this.invoke("set_static", arguments);
-			},
-
-			flashAddEventListener : function() {
-				return this.invoke("add_event_listener", arguments);
 			},
 
 			flashMain : function() {

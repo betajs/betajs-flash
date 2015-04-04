@@ -12,8 +12,8 @@
 			var registry = new BetaJS.Flash.FlashClassRegistry();
 			registry.register("flash.media.Video", ["attachNetStream"]);
 			registry.register("flash.display.Sprite", ["addChild"]);
-			registry.register("flash.net.NetStream", ["play"]);
-			registry.register("flash.net.NetConnection", ["connect"]);
+			registry.register("flash.net.NetStream", ["play", "addEventListener"]);
+			registry.register("flash.net.NetConnection", ["connect", "addEventListener"]);
 
 			var embedding = new BetaJS.Flash.FlashEmbedding(document.body, {
 				registry: registry,
@@ -32,11 +32,10 @@
 				var stage = main.get("stage");
 				stage.set("scaleMode", "noScale");
 				stage.set("align", "TL");
-				console.log(stage.get("stageWidth"));
 				var video = embedding.newObject("flash.media.Video", stage.get("stageWidth"), stage.get("stageHeight"));
 				main.addChildVoid(video);
 				var connection = embedding.newObject("flash.net.NetConnection");
-				connection.addEventListener("netStatus", function () {
+				var cb = embedding.newCallback(function () {
 					var stream = embedding.newObject("flash.net.NetStream", connection);
 					
 					stream.set("client", embedding.newCallback("onMetaData", function (info) {
@@ -50,11 +49,16 @@
 						//$("embed").css("border", "2px solid orange");
 					}));
 					
+					stream.addEventListener("netStatus", embedding.newCallback(function (event) {
+						console.log("Stream Event Info", event.get("info").code);
+					}));
+					
 					video.attachNetStreamVoid(stream);
 					stream.playVoid(document.location + "/../movie.mp4");
 
 					//stream.playVoid("abc.flv");
 				});
+				connection.addEventListener("netStatus", cb);
 				connection.connectVoid(null);
 
 				//connection.connectVoid("rtmp://localhost:1935/vodtest/_definst_");

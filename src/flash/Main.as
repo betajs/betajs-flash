@@ -7,7 +7,7 @@ package
     import flash.desktop.*;
     import flash.events.*;
     import flash.net.*;
-	
+    
     public class Main extends Sprite {
     
     	private var instanceToString: Dictionary = new Dictionary(false);
@@ -16,13 +16,6 @@ package
     	private var instanceId: int = 0;
     	
     	private var flashVars: Object = null;
-    	
-    	private function jsonEncode(object: Object): Object {
-			var encoded: Object = new Object();
-			for (var key: * in object)
-				encoded[key] = object[key];
-			return encoded;
-    	}
     	
     	private function newInstanceString(typeName: String): String {
 		    var chars: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -48,8 +41,8 @@ package
         	ExternalInterface.addCallback("static_call_void", static_call_void);
         	ExternalInterface.addCallback("get_static", get_static);
         	ExternalInterface.addCallback("set_static", set_static);
-        	ExternalInterface.addCallback("add_event_listener", add_event_listener);
         	ExternalInterface.addCallback("create_callback_object", create_callback_object);        	
+        	ExternalInterface.addCallback("create_callback_function", create_callback_function);
         	ExternalInterface.addCallback("main", main);
         	flashVars = LoaderInfo(root.loaderInfo).parameters;
         	if (flashVars.hasOwnProperty("ready")) {
@@ -59,15 +52,27 @@ package
         	}
         }
         
-        public function serialize(value: *): * {
-        	if (getQualifiedClassName(value) == "Array") {
+        private const SERIALIZE_INSTANCE: int = 0;
+        private const SERIALIZE_AUTO: int = 1;
+        private const SERIALIZE_JSON: int = 2;
+        
+        public function serialize(value: *, objectSerialize: int = SERIALIZE_AUTO): * {
+        	if (typeof(value) != "object" && typeof(value) != "function")
+        		return value;
+        	var cls: String = value == this ? flash.utils.getQualifiedSuperclassName(value) : flash.utils.getQualifiedClassName(value);
+        	if (objectSerialize == SERIALIZE_JSON || (objectSerialize == SERIALIZE_AUTO && (cls == "Object" || cls == "Array"))) {
+				var encoded: Object = new Object();
+				for (var key: * in value)
+					encoded[key] = value[key];
+				return encoded;
+        	}
+        	if (cls == "Array") {
         		var result: Array = new Array();
         		for (var i: int = 0; i < value.length; ++i)
-        			result.push(serialize(value[i]));
+        			result.push(serialize(value[i], objectSerialize));
         		return result;
-        	} else if (typeof(value) == "object") {
+        	} else {
         		if (!instanceToString.hasOwnProperty(value)) {
-        			var cls: String = value == this ? flash.utils.getQualifiedSuperclassName(value) : flash.utils.getQualifiedClassName(value)
         			var instanceString: String = newInstanceString(cls);
         			instanceToString[value] = instanceString;
         			stringToInstance[instanceString] = value;
@@ -203,34 +208,40 @@ package
         	}
         	return null;
         }
-        
+
         public function create_callback_object(method: String, callback: String): String {
 			try {
 				var object: Object = new Object();
-				object[method] = function (argument: Object): void {
-					ExternalInterface.call(callback, jsonEncode(argument));
+				object[method] = function (argument: *): void {
+					var argumentSerialized: * = serialize(argument);
+					ExternalInterface.call(callback, argumentSerialized);
+					destroy(argumentSerialized);
 				};
-				var result: * = serialize(object);;
-				return result;
+				return serialize(object, SERIALIZE_INSTANCE);
         	} catch(error: Error) {
         		return serializeError(error);
         	}
         	return null;
         }
         
-        public function add_event_listener(objectName: String, type: String, callback: String): String {
-        	try {
-	        	unserialize(objectName).addEventListener(type, function(event: Event): void {
-		        	var eventSerialized: String = serialize(event);
-		        	ExternalInterface.call(callback, eventSerialized);
-		        	destroy(eventSerialized);
-				});
+        public function create_callback_function(callback: String): String {
+			try {
+				var object: Function = function (argument: *): void {
+					var argumentSerialized: * = serialize(argument);
+					ExternalInterface.call(callback, argumentSerialized);
+					destroy(argumentSerialized);
+				};
+				return serialize(object, SERIALIZE_INSTANCE);
         	} catch(error: Error) {
         		return serializeError(error);
         	}
         	return null;
         }
-
+        /*
+        public function debug(s: String): void {
+        	ExternalInterface.call("console.log", s);
+        }
+		*/
     }
     
 }
