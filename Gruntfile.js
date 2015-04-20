@@ -140,12 +140,12 @@ module.exports = function(grunt) {
 							"test_framework" : "qunit",
 							"timeout": 10 * 60,
 							"browsers": [
-				              /*	'firefox_latest',
+				              	'firefox_latest',
 							    'firefox_4',
 				                'chrome_latest',
-					            'chrome_14', */
+					            'chrome_14', 
 				                'safari_latest',
-/*					            'safari_4',
+					            'safari_4',
 				                'opera_latest', 
 							    'opera_12_15',
 				                'ie_11',
@@ -153,7 +153,7 @@ module.exports = function(grunt) {
 				                'ie_9',
 				                'ie_8',
 				                'ie_7',
-				                'ie_6' */
+				                'ie_6'
 				            ]
 						}
 					}
@@ -164,6 +164,7 @@ module.exports = function(grunt) {
 			}			
 		}
 	});
+	
 	grunt.loadNpmTasks('grunt-contrib-concat');
 	grunt.loadNpmTasks('grunt-contrib-uglify');
 	grunt.loadNpmTasks('grunt-git-revision-count');
