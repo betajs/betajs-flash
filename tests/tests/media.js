@@ -9,8 +9,8 @@ test("test playback mp4", function() {
 		registry: registry,
 		wrap: true
 	}, {
-		flashFile: "../dist/betajs-flash.swf",
-		forceReload: false
+		flashFile: window.BrowserStack ? "//files.betajs.com/betajs-flash.swf" : "../dist/betajs-flash.swf",
+		forceReload: true
 	});
 	embedding.ready(function () {
 		var main = embedding.flashMain();
