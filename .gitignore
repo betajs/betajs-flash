@@ -2,4 +2,6 @@ node_modules/
 /temp
 .DS_Store
 .sass-cache/
-*.mp4
+/docs
+browserstack.json
+BrowserStackLocal

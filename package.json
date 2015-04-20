@@ -19,10 +19,31 @@
 		"grunt-contrib-jshint": "",
 		"grunt-wget": "",
 		"grunt-jsdoc": "beta",
-		"grunt-shell": ""
+		"grunt-shell": "",
+		"grunt-template": ""
 	},
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/betajs/betajs-flash.git"
+	},
+	"meta": {
+		"status": "Active, In Development",
+		"weakDependencies": {
+			"betajs-scoped": "https://github.com/betajs/betajs-scoped"
+		},
+		"dependencies": {
+			"betajs": "https://github.com/betajs/betajs",
+			"betajs-browser": "https://github.com/betajs/betajs-browser"
+		},
+		"tests": {
+			"Test Suite": "http://rawgit.com/betajs/betajs-flash/master/tests/tests.html"
+		},
+		"cdn": {
+			"betajs-flash.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.js",
+			"betajs-flash.min.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.min.js",
+			"betajs-flash-noscoped.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash-noscoped.js",
+			"betajs-flash-noscoped.min.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash-noscoped.min.js",
+			"betajs-flash.swf": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.swf"
+		}
 	}
 }
