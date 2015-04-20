@@ -33,7 +33,7 @@ test("test playback mp4", function() {
 			}));
 			
 			video.attachNetStreamVoid(stream);
-			stream.playVoid("../tests/tests/movie.mp4");
+			stream.playVoid(document.location + "/../tests/movie.mp4");
 		});
 		connection.addEventListener("netStatus", cb);
 		connection.connectVoid(null);

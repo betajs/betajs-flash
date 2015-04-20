@@ -31,6 +31,7 @@ package
 		}
 
         public function Main() {
+        	Security.allowDomain("*");
         	ExternalInterface.addCallback("create", create);
         	ExternalInterface.addCallback("destroy", destroy);
         	ExternalInterface.addCallback("call", call);
