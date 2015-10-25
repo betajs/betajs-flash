@@ -16,6 +16,8 @@ package
     	private var instanceId: int = 0;
     	
     	private var flashVars: Object = null;
+    
+    	private var debugging: Boolean = false;
     	
     	private function newInstanceString(typeName: String): String {
 		    var chars: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -31,6 +33,10 @@ package
 		}
 
         public function Main() {
+        	flashVars = LoaderInfo(root.loaderInfo).parameters;
+        	if (flashVars.hasOwnProperty("debug"))
+	        	debugging = true;
+        	debug("Begin Initialize");
         	Security.allowDomain("*");
         	ExternalInterface.addCallback("create", create);
         	ExternalInterface.addCallback("destroy", destroy);
@@ -45,12 +51,13 @@ package
         	ExternalInterface.addCallback("create_callback_object", create_callback_object);        	
         	ExternalInterface.addCallback("create_callback_function", create_callback_function);
         	ExternalInterface.addCallback("main", main);
-        	flashVars = LoaderInfo(root.loaderInfo).parameters;
+        	ExternalInterface.addCallback("echo", echo);
         	if (flashVars.hasOwnProperty("ready")) {
 	        	setTimeout(function ():void {
 	        		ExternalInterface.call(flashVars.ready);
 	        	}, 0);        	
         	}
+        	debug("End Initialize");
         }
         
         private const SERIALIZE_INSTANCE: int = 0;
@@ -108,6 +115,7 @@ package
 
         public function create(className: String, ... args: *): String {
         	try {
+        		debug("Begin Instantiate " + className);
 	        	var myClass: Class = getDefinitionByName(className) as Class;
 				var myInstance: *;
 				if (args.length == 0)
@@ -116,8 +124,10 @@ package
 					myInstance = new myClass(unserialize(args[0]));
 				else if (args.length == 2)
 					myInstance = new myClass(unserialize(args[0]), unserialize(args[1]));
+				debug("End Instantiate " + className);
 	        	return serialize(myInstance);
         	} catch(error: Error) {
+        		debug("Error Instantiate " + className);
         		return serializeError(error);
         	}
         	return null;
@@ -238,11 +248,16 @@ package
         	}
         	return null;
         }
-        /*
+        
+    	public function echo(data: String): String {
+    		return data;
+    	}
+
         public function debug(s: String): void {
-        	ExternalInterface.call("console.log", s);
+        	if (debugging)
+        		ExternalInterface.call("console.log", s);
         }
-		*/
+
     }
     
 }

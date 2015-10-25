@@ -1,6 +1,6 @@
 {
 	"name": "betajs-flash",
-	"version": "0.0.1",
+	"version": "0.0.2",
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"homepage": "http://betajs.com",
 	"contributors": ["Oliver Friedmann"],
@@ -18,7 +18,7 @@
 		"grunt-node-qunit": "",
 		"grunt-contrib-jshint": "",
 		"grunt-wget": "",
-		"grunt-jsdoc": "beta",
+		"grunt-jsdoc": "",
 		"grunt-shell": "",
 		"grunt-template": ""
 	},
