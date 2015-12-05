@@ -27,6 +27,7 @@ test("test playback mp4", function() {
 				QUnit.equal(info.width, 640);
 				QUnit.equal(info.height, 360);
 				start();
+				embedding.destroy();
 			}));
 			
 			stream.addEventListener("netStatus", embedding.newCallback(function (event) {
