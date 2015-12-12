@@ -1,4 +1,4 @@
-# betajs-flash 0.0.1
+# betajs-flash 0.0.4
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 

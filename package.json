@@ -1,6 +1,6 @@
 {
 	"name": "betajs-flash",
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"homepage": "http://betajs.com",
 	"contributors": ["Oliver Friedmann"],
