@@ -181,8 +181,13 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				if (this.__is_ready) {
 					var test = Time.now();
 					var tries = 10;
-					while (this.__embedding.echo(test) !== test && tries > 0)
+					while (tries > 0) {
+						try {
+							if (this.__embedding.echo(test) == test)
+								break;
+						} catch (e) {}
 						tries--;
+					}
 					var result = tries === 0;
 					if (result !== this.__is_suspended) {
 						this.__is_suspended = result;
