@@ -1,7 +1,7 @@
 Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin", "jquery:", "base:Strings",
-		"base:Functions", "base:Types", "base:Objs", "base:Ids", "base:Time", "base:Timers.Timer", "base:Async", "module:__global",
+		"base:Functions", "base:Types", "base:Objs", "base:Ids", "base:Time", "base:Timers.Timer", "base:Async", "base:Tokens",
 		"module:FlashObjectWrapper", "module:FlashClassWrapper", "browser:FlashHelper", "module:" ], function(Class, EventsMixin, $,
-		Strings, Functions, Types, Objs, Ids, Time, Timer, Async, moduleGlobal, FlashObjectWrapper, FlashClassWrapper, FlashHelper, mod, scoped) {
+		Strings, Functions, Types, Objs, Ids, Time, Timer, Async, Tokens, FlashObjectWrapper, FlashClassWrapper, FlashHelper, mod, scoped) {
 	return Class.extend({
 		scoped : scoped
 	}, [EventsMixin, function(inherited) {
@@ -16,13 +16,13 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				this.__callbacks = {
 					ready: Functions.as_method(this.__ready, this)
 				};
-				this.__namespace = "BetaJS.Flash.__global." + this.cid();
+				this.__namespace = "flash_" + Tokens.generate_token();
 				this.__is_ready = false;
 				this.__is_suspended = false;
 				this.__ready_queue = [];
 				this.__wrappers = {};
 				this.__staticWrappers = {};
-				moduleGlobal[this.cid()] = this.__callbacks;
+				window[this.__namespace] = this.__callbacks;
 				flashOptions = Objs.extend(Objs.clone(mod.options, 1), Objs.extend({
 					FlashVars: {}
 				}, flashOptions));
@@ -38,7 +38,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 			},
 			
 			destroy: function () {
-				delete moduleGlobal[this.cid()];
+				delete window[this.__namespace];
 				Objs.iter(this.__wrappers, function (wrapper) {
 					wrapper.destroy();
 				});
