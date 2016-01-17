@@ -83,7 +83,8 @@ module.exports = function(grunt) {
 		},
 		shell: {
 			flash: {
-		    	command: 'mxmlc Main.as -static-link-runtime-shared-libraries -output ../../dist/betajs-flash.swf',
+				// https://github.com/nexussays/playerglobal/tree/master/11.2
+		    	command: 'mxmlc Main.as -target-player=11.2 -static-link-runtime-shared-libraries -output ../../dist/betajs-flash.swf',
 		    	options: {
                 	stdout: true,
                 	stderr: true,
@@ -142,7 +143,15 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"README.md" : ["readme.tpl"]
+					"README.md" : ["compile/readme.tpl"]
+				}
+			},
+			"license" : {
+				options : {
+					data: grunt.file.readJSON('package.json')
+				},
+				files : {
+					"LICENSE" : ["compile/license.tpl"]
 				}
 			},
 			"jsdoc": {
@@ -180,7 +189,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"jsdoc.conf.json": ["json.tpl"]
+					"jsdoc.conf.json": ["compile/json.tpl"]
 				}
 			},
 			"browserstack-desktop" : {
@@ -210,7 +219,7 @@ module.exports = function(grunt) {
 					}
 				},
 				files : {
-					"browserstack.json" : ["json.tpl"]
+					"browserstack.json" : ["compile/json.tpl"]
 				}
 			}			
 		}
@@ -239,5 +248,6 @@ module.exports = function(grunt) {
 	grunt.registerTask('closure', [ 'closureCompiler', 'clean:closure' ]);
 	grunt.registerTask('browserstack-desktop', [ 'template:browserstack-desktop', 'shell:browserstack', 'clean:browserstack' ]);
 	grunt.registerTask('readme', [ 'template:readme' ]);
+	grunt.registerTask('license', [ 'template:license' ]);
 
 };

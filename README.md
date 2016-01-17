@@ -1,4 +1,4 @@
-# betajs-flash 0.0.4
+# betajs-flash 0.0.6
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 
@@ -47,11 +47,12 @@ Active, In Development
 
 ## Contributors
 
+- Ziggeo
 - Oliver Friedmann
 
 
 ## License
 
-MIT
+Apache 2.0
 
 

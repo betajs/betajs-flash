@@ -1,10 +1,10 @@
 /*!
-betajs-flash - v0.0.4 - 2015-12-23
-Copyright (c) Oliver Friedmann
-MIT Software License.
+betajs-flash - v0.0.6 - 2016-01-17
+Copyright (c) Ziggeo,Oliver Friedmann
+Apache 2.0 Software License.
 */
 /*!
-betajs-scoped - v0.0.4 - 2015-12-12
+betajs-scoped - v0.0.5 - 2015-12-23
 Copyright (c) Oliver Friedmann
 MIT Software License.
 */
@@ -424,7 +424,7 @@ function newScope (parent, parentNS, rootNS, globalNS) {
 						params.push(Helper.stringify(argmts[i]));
 					this.compiled += this.options.ident + "." + name + "(" + params.join(", ") + ");\n\n";
 				}
-				var result = args.callback.apply(args.context || this, arguments);
+				var result = this.options.compile ? {} : args.callback.apply(args.context || this, arguments);
 				callback.call(this, ns, result);
 			}, this);
 		};
@@ -642,7 +642,7 @@ var rootScope = newScope(null, rootNamespace, rootNamespace, globalNamespace);
 var Public = Helper.extend(rootScope, {
 		
 	guid: "4b6878ee-cb6a-46b3-94ac-27d91f58d666",
-	version: '21.1449951185971',
+	version: '22.1450888807473',
 		
 	upgrade: Attach.upgrade,
 	attach: Attach.attach,
@@ -670,9 +670,9 @@ Public.exports();
 	return Public;
 }).call(this);
 /*!
-betajs-flash - v0.0.4 - 2015-12-23
-Copyright (c) Oliver Friedmann
-MIT Software License.
+betajs-flash - v0.0.6 - 2016-01-17
+Copyright (c) Ziggeo,Oliver Friedmann
+Apache 2.0 Software License.
 */
 (function () {
 
@@ -687,7 +687,7 @@ Scoped.binding("jquery", "global:jQuery");
 Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		version: '21.1450889965167',
+		version: '23.1453060342206',
 		options: {
 			flashFile: "betajs-flash.swf"
 		}
@@ -717,6 +717,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				this.__namespace = "flash_" + Tokens.generate_token();
 				this.__is_ready = false;
 				this.__is_suspended = false;
+				this.__throttle_status = "";
 				this.__ready_queue = [];
 				this.__wrappers = {};
 				this.__staticWrappers = {};
@@ -891,11 +892,22 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 						this.__is_suspended = result;
 						this.trigger(result ? "suspended" : "resumed");
 					}
+					try {
+						var status = this.__embedding.throttle();
+						var changed = status !== this.__throttle_status;
+						this.__throttle_status = status;
+						if (changed)
+							this.trigger(this.isThrottled() ? "throttled" : "unthrottled");
+					} catch (e) {}
 				}
 			},
 			
 			isSuspended: function () {
 				return this.__is_ready && this.__is_suspended;
+			},
+
+			isThrottled: function () {
+				return this.__throttle_status === "throttle";
 			},
 			
 			__ready: function () {

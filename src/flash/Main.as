@@ -18,6 +18,8 @@ package
     	private var flashVars: Object = null;
     
     	private var debugging: Boolean = false;
+
+		private var throttleState: String = "";
     	
     	private function newInstanceString(typeName: String): String {
 		    var chars: String = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -52,6 +54,8 @@ package
         	ExternalInterface.addCallback("create_callback_function", create_callback_function);
         	ExternalInterface.addCallback("main", main);
         	ExternalInterface.addCallback("echo", echo);
+			ExternalInterface.addCallback("throttle", throttle)
+			stage.addEventListener(ThrottleEvent.THROTTLE, onThrottleEvent);
         	if (flashVars.hasOwnProperty("ready")) {
 	        	setTimeout(function ():void {
 	        		ExternalInterface.call(flashVars.ready);
@@ -59,7 +63,11 @@ package
         	}
         	debug("End Initialize");
         }
-        
+
+		private function onThrottleEvent(e: ThrottleEvent): void {
+			throttleState = e.state;
+		}
+
         private const SERIALIZE_INSTANCE: int = 0;
         private const SERIALIZE_AUTO: int = 1;
         private const SERIALIZE_JSON: int = 2;
@@ -252,6 +260,10 @@ package
     	public function echo(data: String): String {
     		return data;
     	}
+
+		public function throttle(): String {
+			return throttleState;
+		}
 
         public function debug(s: String): void {
         	if (debugging)

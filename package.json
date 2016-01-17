@@ -1,10 +1,10 @@
 {
 	"name": "betajs-flash",
-	"version": "0.0.5",
+	"version": "0.0.6",
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"homepage": "http://betajs.com",
-	"contributors": ["Oliver Friedmann"],
-	"license": "MIT",
+	"contributors": ["Ziggeo", "Oliver Friedmann"],
+	"license": "Apache 2.0",
 	"devDependencies": {
 		"grunt": "",
 		"grunt-contrib-jshint": "",

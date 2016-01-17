@@ -19,6 +19,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				this.__namespace = "flash_" + Tokens.generate_token();
 				this.__is_ready = false;
 				this.__is_suspended = false;
+				this.__throttle_status = "";
 				this.__ready_queue = [];
 				this.__wrappers = {};
 				this.__staticWrappers = {};
@@ -193,11 +194,22 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 						this.__is_suspended = result;
 						this.trigger(result ? "suspended" : "resumed");
 					}
+					try {
+						var status = this.__embedding.throttle();
+						var changed = status !== this.__throttle_status;
+						this.__throttle_status = status;
+						if (changed)
+							this.trigger(this.isThrottled() ? "throttled" : "unthrottled");
+					} catch (e) {}
 				}
 			},
 			
 			isSuspended: function () {
 				return this.__is_ready && this.__is_suspended;
+			},
+
+			isThrottled: function () {
+				return this.__throttle_status === "throttle";
 			},
 			
 			__ready: function () {
