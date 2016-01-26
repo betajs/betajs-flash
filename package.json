@@ -1,6 +1,6 @@
 {
 	"name": "betajs-flash",
-	"version": "0.0.6",
+	"version": "0.0.7",
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"homepage": "http://betajs.com",
 	"contributors": ["Ziggeo", "Oliver Friedmann"],
@@ -34,6 +34,14 @@
 		"dependencies": {
 			"betajs": "https://github.com/betajs/betajs",
 			"betajs-browser": "https://github.com/betajs/betajs-browser"
+		},
+		"compatability": {
+			"Firefox": "4 - Latest",
+			"Chrome": "18 - Latest",
+			"Safari": "6 - Latest",
+			"Opera": "18 - Latest",
+			"Internet Explorer": "8 - Latest",
+			"Edge": "12 - Latest"
 		},
 		"tests": {
 			"Test Suite": "http://rawgit.com/betajs/betajs-flash/master/tests/tests.html"

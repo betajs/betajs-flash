@@ -1,4 +1,6 @@
 test("test playback mp4", function() {
+	var flashFile = window.BrowserStack ? "//files.betajs.com/betajs-flash.swf" : "../dist/betajs-flash.swf";
+	var videoFile = window.BrowserStack ? "http://files.betajs.com/movie.mp4" : document.location + "/../tests/movie.mp4";
 	stop();
 	var registry = new BetaJS.Flash.FlashClassRegistry();
 	registry.register("flash.media.Video", ["attachNetStream"]);
@@ -9,7 +11,7 @@ test("test playback mp4", function() {
 		registry: registry,
 		wrap: true
 	}, {
-		flashFile: window.BrowserStack ? "//files.betajs.com/betajs-flash.swf" : "../dist/betajs-flash.swf",
+		flashFile: flashFile,
 		forceReload: true
 	});
 	embedding.ready(function () {
@@ -34,7 +36,7 @@ test("test playback mp4", function() {
 			}));
 			
 			video.attachNetStreamVoid(stream);
-			stream.playVoid(document.location + "/../tests/movie.mp4");
+			stream.playVoid(videoFile);
 		});
 		connection.addEventListener("netStatus", cb);
 		connection.connectVoid(null);

@@ -1,4 +1,4 @@
-# betajs-flash 0.0.6
+# betajs-flash 0.0.7
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 
@@ -14,6 +14,16 @@ Active, In Development
 | Git        | [git://github.com/betajs/betajs-flash.git](git://github.com/betajs/betajs-flash.git) |
 | Repository | [http://github.com/betajs/betajs-flash](http://github.com/betajs/betajs-flash) |
 
+
+## Compatability (Tested)
+| Target | Versions |
+| :----- | -------: |
+| Firefox | 4 - Latest |
+| Chrome | 18 - Latest |
+| Safari | 6 - Latest |
+| Opera | 18 - Latest |
+| Internet Explorer | 8 - Latest |
+| Edge | 12 - Latest |
 
 
 ## CDN
