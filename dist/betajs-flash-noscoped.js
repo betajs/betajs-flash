@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.6 - 2016-01-17
+betajs-flash - v0.0.9 - 2016-02-02
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache 2.0 Software License.
 */
@@ -16,7 +16,7 @@ Scoped.binding("jquery", "global:jQuery");
 Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		version: '23.1453060342206',
+		version: '25.1454464594294',
 		options: {
 			flashFile: "betajs-flash.swf"
 		}
@@ -57,6 +57,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				flashOptions.FlashVars.ready = this.__namespace + ".ready";
 				if (options.debug)
 					flashOptions.FlashVars.debug = true;
+				this.__container = $(container);
 				this.__embedding = FlashHelper.embedFlashObject(container, flashOptions);
 				this.__suspendedTimer = this.auto_destroy(new Timer({
 					delay: 50,
@@ -73,6 +74,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				Objs.iter(this.__staticWrappers, function (wrapper) {
 					wrapper.destroy();
 				});
+				this.__container.html("");
 				inherited.destroy.call(this);
 			},
 			

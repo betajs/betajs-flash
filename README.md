@@ -1,4 +1,4 @@
-# betajs-flash 0.0.7
+# betajs-flash 0.0.8
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 
@@ -20,7 +20,7 @@ Active, In Development
 | :----- | -------: |
 | Firefox | 4 - Latest |
 | Chrome | 18 - Latest |
-| Safari | 6 - Latest |
+| Safari | 5 - Latest |
 | Opera | 18 - Latest |
 | Internet Explorer | 8 - Latest |
 | Edge | 12 - Latest |

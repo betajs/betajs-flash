@@ -7,7 +7,7 @@ test("test playback mp4", function() {
 	registry.register("flash.display.Sprite", ["addChild"]);
 	registry.register("flash.net.NetStream", ["play", "addEventListener"]);
 	registry.register("flash.net.NetConnection", ["connect", "addEventListener"]);
-	var embedding = new BetaJS.Flash.FlashEmbedding($("#qunit-fixture"), {
+	var embedding = new BetaJS.Flash.FlashEmbedding($("#visible-fixture"), {
 		registry: registry,
 		wrap: true
 	}, {
@@ -24,7 +24,6 @@ test("test playback mp4", function() {
 		var connection = embedding.newObject("flash.net.NetConnection");
 		var cb = embedding.newCallback(function () {
 			var stream = embedding.newObject("flash.net.NetStream", connection);
-			
 			stream.set("client", embedding.newCallback("onMetaData", function (info) {
 				QUnit.equal(info.width, 640);
 				QUnit.equal(info.height, 360);

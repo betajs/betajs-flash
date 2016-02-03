@@ -30,6 +30,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				flashOptions.FlashVars.ready = this.__namespace + ".ready";
 				if (options.debug)
 					flashOptions.FlashVars.debug = true;
+				this.__container = $(container);
 				this.__embedding = FlashHelper.embedFlashObject(container, flashOptions);
 				this.__suspendedTimer = this.auto_destroy(new Timer({
 					delay: 50,
@@ -46,6 +47,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				Objs.iter(this.__staticWrappers, function (wrapper) {
 					wrapper.destroy();
 				});
+				this.__container.html("");
 				inherited.destroy.call(this);
 			},
 			

@@ -1,4 +1,5 @@
 <%= indent %># <%= framework.name %> <%= framework.version %>
+[![Code Climate](https://codeclimate.com/github/betajs/<%= framework.name %>/badges/gpa.svg)](https://codeclimate.com/github/betajs/<%= framework.name %>)
 
 <%= framework.description %>
 

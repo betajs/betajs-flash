@@ -203,7 +203,7 @@ module.exports = function(grunt) {
 							    'firefox_latest',
 							    'firefox_4',
 				                'safari_latest',
-					            'safari_6',
+					            'safari_5',
 				                'chrome_latest',
 					            'chrome_18',
 							    'opera_latest',
