@@ -1,5 +1,6 @@
-# betajs-flash 0.0.9
+# betajs-flash 0.0.10
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-flash/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-flash)
+
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 
@@ -14,6 +15,9 @@ Active, In Development
 | Homepage   | [http://betajs.com](http://betajs.com) |
 | Git        | [git://github.com/betajs/betajs-flash.git](git://github.com/betajs/betajs-flash.git) |
 | Repository | [http://github.com/betajs/betajs-flash](http://github.com/betajs/betajs-flash) |
+| Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
+| Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
+
 
 
 ## Compatability (Tested)

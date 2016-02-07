@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.9 - 2016-02-02
+betajs-flash - v0.0.10 - 2016-02-07
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache 2.0 Software License.
 */
@@ -16,7 +16,7 @@ Scoped.binding("jquery", "global:jQuery");
 Scoped.define("module:", function () {
 	return {
 		guid: "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		version: '25.1454464594294',
+		version: '27.1454871935973',
 		options: {
 			flashFile: "betajs-flash.swf"
 		}
