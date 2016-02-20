@@ -9,8 +9,15 @@ module.exports = function(grunt) {
 	
     /* Compilation */    
 	.flashTask(null, 'src/flash/Main.as', 'dist/betajs-flash.swf')
-    .concatTask('concat-raw', ['src/fragments/begin.js-fragment', 'src/**/*.js', 'src/fragments/end.js-fragment'], 'dist/' + dist + '-raw.js')
-    .preprocessrevisionTask(null, 'dist/' + dist + '-raw.js', 'dist/' + dist + '-noscoped.js')
+	.scopedclosurerevisionTask(null, "src/**/*.js", "dist/" + dist + "-noscoped.js", {
+		"module": "global:BetaJS.Flash",
+		"base": "global:BetaJS",
+		"browser": "global:BetaJS.Browser",
+		"jquery": "global:jQuery"
+    }, {
+    	"base:version": 444,
+    	"browser:version": 58
+    })	
     .concatTask('concat-scoped', ['vendors/scoped.js', 'dist/' + dist + '-noscoped.js'], 'dist/' + dist + '.js')
     .uglifyTask('uglify-noscoped', 'dist/' + dist + '-noscoped.js', 'dist/' + dist + '-noscoped.min.js')
     .uglifyTask('uglify-scoped', 'dist/' + dist + '.js', 'dist/' + dist + '.min.js')
@@ -41,7 +48,7 @@ module.exports = function(grunt) {
 
 	grunt.initConfig(gruntHelper.config);	
 
-	grunt.registerTask('default', ['readme', 'license', 'codeclimate', 'flash', 'concat-raw', 'preprocessrevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
+	grunt.registerTask('default', ['readme', 'license', 'codeclimate', 'flash', 'scopedclosurerevision', 'concat-scoped', 'uglify-noscoped', 'uglify-scoped']);
 	grunt.registerTask('check', ['lint', 'browserqunit']);
 
 };

@@ -1,3 +1,11 @@
+Scoped.extend("module:", ["module:"], function () {
+	return {
+		options: {
+			flashFile: "betajs-flash.swf"			
+		}
+	};
+});
+
 Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin", "jquery:", "base:Strings",
 		"base:Functions", "base:Types", "base:Objs", "base:Ids", "base:Time", "base:Timers.Timer", "base:Async", "base:Tokens",
 		"module:FlashObjectWrapper", "module:FlashClassWrapper", "browser:FlashHelper", "module:" ], function(Class, EventsMixin, $,
@@ -40,7 +48,10 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 			},
 			
 			destroy: function () {
-				delete window[this.__namespace];
+				try {
+					window[this.__namespace] = null;
+					delete window[this.__namespace];
+				} catch (e) {}
 				Objs.iter(this.__wrappers, function (wrapper) {
 					wrapper.destroy();
 				});
