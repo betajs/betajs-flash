@@ -1,67 +1,85 @@
 {
-	"name": "betajs-flash",
-	"version": "0.0.11",
-	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
-	"homepage": "http://betajs.com",
-	"contributors": ["Ziggeo", "Oliver Friedmann"],
-	"license": "Apache 2.0",
-	"devDependencies": {
-		"grunt": "",
-		"grunt-contrib-jshint": "",
-		"grunt-contrib-nodeunit": "",
-		"grunt-contrib-concat": "",
-		"grunt-contrib-uglify": "",
-		"grunt-contrib-clean": "",
-		"grunt-preprocess": "",
-		"grunt-git-revision-count": "",
-		"grunt-closure-tools": "",
-		"grunt-node-qunit": "",
-		"grunt-contrib-jshint": "",
-		"grunt-wget": "",
-		"grunt-jsdoc": "",
-		"grunt-shell": "",
-		"grunt-template": "",
-		"betajs-scoped": "",
-		"betajs-compile": "betajs/betajs-compile"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git://github.com/betajs/betajs-flash.git"
-	},
-	"meta": {
-		"guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-		"blog": "http://blog.betajs.com",
-		"twitter": "http://twitter.com/thebetajs",
-		"badges": {
-			"codeclimate": true,
-			"travis": false,
-			"npm": false
-		},
-		"status": "Active, In Development",
-		"weakDependencies": {
-			"betajs-scoped": "https://github.com/betajs/betajs-scoped"
-		},
-		"dependencies": {
-			"betajs": "https://github.com/betajs/betajs",
-			"betajs-browser": "https://github.com/betajs/betajs-browser"
-		},
-		"compatability": {
-			"Firefox": "4 - Latest",
-			"Chrome": "18 - Latest",
-			"Safari": "5 - Latest",
-			"Opera": "18 - Latest",
-			"Internet Explorer": "8 - Latest",
-			"Edge": "12 - Latest"
-		},
-		"tests": {
-			"Test Suite": "http://rawgit.com/betajs/betajs-flash/master/tests/tests.html"
-		},
-		"cdn": {
-			"betajs-flash.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.js",
-			"betajs-flash.min.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.min.js",
-			"betajs-flash-noscoped.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash-noscoped.js",
-			"betajs-flash-noscoped.min.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash-noscoped.min.js",
-			"betajs-flash.swf": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.swf"
-		}
-	}
+    "homepage": "http://betajs.com",
+    "license": "Apache-2.0",
+    "licenses": [
+        {
+            "type": "Apache-2.0",
+            "url": "https://github.com/betajs/betajs-flash/blob/master/LICENSE"
+        }
+    ],
+    "author": {
+        "name": "BetaJS",
+        "email": "info@betajs.com"
+    },
+    "bugs": {
+        "url": "https://github.com/betajs/betajs-flash/issues"
+    },
+    "name": "betajs-flash",
+    "version": "0.0.12",
+    "description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
+    "contributors": [
+        "Ziggeo",
+        "Oliver Friedmann"
+    ],
+    "devDependencies": {
+        "grunt": "",
+        "grunt-contrib-jshint": "",
+        "grunt-contrib-concat": "",
+        "grunt-contrib-uglify": "",
+        "grunt-contrib-clean": "",
+        "grunt-preprocess": "",
+        "grunt-git-revision-count": "",
+        "grunt-closure-tools": "",
+        "grunt-node-qunit": "",
+        "qunit": "",
+        "grunt-contrib-connect": "",
+        "grunt-wget": "",
+        "grunt-jsdoc": "",
+        "grunt-shell": "",
+        "grunt-template": "",
+        "grunt-betajs-docs-compile": "",
+        "betajs-scoped": "",
+        "betajs-compile": "betajs/betajs-compile"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git://github.com/betajs/betajs-flash.git"
+    },
+    "meta": {
+        "blog": "http://blog.betajs.com",
+        "twitter": "http://twitter.com/thebetajs",
+        "guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
+        "installdoc": "docsrc/common/install.md",
+        "summarydoc": "docsrc/common/summary.md",
+        "badges": {
+            "codeclimate": true,
+            "travis": false,
+            "npm": false
+        },
+        "weakDependencies": {
+            "betajs-scoped": "https://github.com/betajs/betajs-scoped"
+        },
+        "dependencies": {
+            "betajs": "https://github.com/betajs/betajs",
+            "betajs-browser": "https://github.com/betajs/betajs-browser"
+        },
+        "compatability": {
+            "Firefox": "4 - Latest",
+            "Chrome": "18 - Latest",
+            "Safari": "5 - Latest",
+            "Opera": "18 - Latest",
+            "Internet Explorer": "8 - Latest",
+            "Edge": "12 - Latest"
+        },
+        "tests": {
+            "Test Suite": "http://rawgit.com/betajs/betajs-flash/master/tests/tests.html"
+        },
+        "cdn": {
+            "betajs-flash.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.js",
+            "betajs-flash.min.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.min.js",
+            "betajs-flash-noscoped.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash-noscoped.js",
+            "betajs-flash-noscoped.min.js": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash-noscoped.min.js",
+            "betajs-flash.swf": "http://cdn.rawgit.com/betajs/betajs-flash/master/dist/betajs-flash.swf"
+        }
+    }
 }

@@ -1,15 +1,76 @@
-# betajs-flash 0.0.11
+# betajs-flash 0.0.12
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-flash/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-flash)
 
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 
-## Status
-Active, In Development
+
+
+## Getting Started
+
+
+You can use the library in the browser and compile it as well.
+
+#### Browser
+
+```javascript
+	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+	<script src="betajs/dist/betajs.min.js"></script>
+	<script src="betajs-browser/dist/betajs-browser.min.js"></script>
+	<script src="betajs-flash/dist/betajs-flash.min.js"></script>
+``` 
+
+#### Compile
+
+```javascript
+	git clone https://github.com/betajs/betajs-flash.git
+	npm install
+	grunt
+```
 
 
 
+## Basic Usage
 
+
+```js
+
+	var registry = new BetaJS.Flash.FlashClassRegistry();
+	registry.register("flash.media.Video", ["attachNetStream"]);
+	registry.register("flash.display.Sprite", ["addChild"]);
+	registry.register("flash.net.NetStream", ["play", "addEventListener"]);
+	registry.register("flash.net.NetConnection", ["connect", "addEventListener"]);
+
+	var embedding = new BetaJS.Flash.FlashEmbedding($("#embed-here").get(0), {
+		registry: registry,
+		wrap: true
+	}, {
+		flashFile: "betajs-flash/dist/betajs-flash.swf"
+	});
+	
+	embedding.ready(function () {
+		var main = embedding.flashMain();
+		var stage = main.get("stage");
+		stage.set("scaleMode", "noScale");
+		stage.set("align", "TL");
+		var video = embedding.newObject("flash.media.Video", stage.get("stageWidth"), stage.get("stageHeight"));
+		main.addChildVoid(video);
+		var connection = embedding.newObject("flash.net.NetConnection");
+		var cb = embedding.newCallback(function () {
+			var stream = embedding.newObject("flash.net.NetStream", connection);
+			video.attachNetStreamVoid(stream);
+			stream.playVoid("movie.mp4");
+		});
+		connection.addEventListener("netStatus", cb);
+		connection.connectVoid(null);
+	});
+```
+
+```html
+
+    <div id='embed-here'></div>
+
+```
 
 
 
@@ -24,7 +85,7 @@ Active, In Development
 
 
 
-## Compatability (Tested)
+## Compatability
 | Target | Versions |
 | :----- | -------: |
 | Firefox | 4 - Latest |
@@ -72,6 +133,6 @@ Active, In Development
 
 ## License
 
-Apache 2.0
+Apache-2.0
 
 
