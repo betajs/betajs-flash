@@ -4,6 +4,7 @@
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"contributors": ["Ziggeo", "Oliver Friedmann"],
 	"devDependencies": {
+    	"lodash": "",
 		"grunt": "",
 		"grunt-contrib-jshint": "",
 		"grunt-contrib-concat": "",
