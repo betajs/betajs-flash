@@ -1,4 +1,4 @@
-# betajs-flash 0.0.12
+# betajs-flash 0.0.13
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-flash/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-flash)
 
 
@@ -136,3 +136,7 @@ You can use the library in the browser and compile it as well.
 Apache-2.0
 
 
+## Credits
+
+This software may include modified and unmodified portions of:
+- AS3CoreLib, BSD License, (c) 2008, Adobe Systems Incorporated

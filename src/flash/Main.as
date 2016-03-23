@@ -7,8 +7,11 @@ package
     import flash.desktop.*;
     import flash.events.*;
     import flash.net.*;
+	import com.adobe.images.*;
     
     public class Main extends Sprite {
+    	
+    	private var includedLibraries: * = [JPGEncoder, PNGEncoder];
     
     	private var instanceToString: Dictionary = new Dictionary(false);
     	private var stringToInstance: Dictionary = new Dictionary(false);
@@ -33,7 +36,7 @@ package
 		private function serializeError(error: Error): String {
 			return "__FLASHERR__" + error.toString();
 		}
-
+		
         public function Main() {
         	flashVars = LoaderInfo(root.loaderInfo).parameters;
         	if (flashVars.hasOwnProperty("debug"))

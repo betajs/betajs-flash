@@ -1,6 +1,6 @@
 {
 	"name": "betajs-flash",
-	"version": "0.0.12",
+	"version": "0.0.13",
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"contributors": ["Ziggeo", "Oliver Friedmann"],
 	"devDependencies": {
@@ -45,6 +45,9 @@
 			"betajs": "https://github.com/betajs/betajs",
 			"betajs-browser": "https://github.com/betajs/betajs-browser"
 		},
+		"credits": [
+			"AS3CoreLib, BSD License, (c) 2008, Adobe Systems Incorporated"
+		],
 		"compatability": {
 			"Firefox": "4 - Latest",
 			"Chrome": "18 - Latest",
