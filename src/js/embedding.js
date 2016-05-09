@@ -38,6 +38,16 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 				flashOptions.FlashVars.ready = this.__namespace + ".ready";
 				if (options.debug)
 					flashOptions.FlashVars.debug = true;
+				if (!container) {
+					this.__helper_container = true;
+					container = $("<div></div>").appendTo("body");
+					container.css("width", "1px");
+					container.css("height", "1px");
+					container.css("visibility", "hidden");
+					container.css("position", "absolute");
+					container.css("z-index", "-1");
+					container = container.get(0);
+				}
 				this.__container = $(container);
 				this.__embedding = FlashHelper.embedFlashObject(container, flashOptions);
 				this.__suspendedTimer = this.auto_destroy(new Timer({
@@ -59,6 +69,8 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 					wrapper.destroy();
 				});
 				this.__container.html("");
+				if (this.__helper_container)
+					$(this.__container).remove();
 				inherited.destroy.call(this);
 			},
 			
