@@ -15,7 +15,7 @@
         "url": "https://github.com/betajs/betajs-flash/issues"
     },
     "name": "betajs-flash",
-    "version": "0.0.14",
+    "version": "0.0.15",
     "description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
     "contributors": [
         "Ziggeo",

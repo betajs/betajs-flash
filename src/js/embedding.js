@@ -63,10 +63,10 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 					delete window[this.__namespace];
 				} catch (e) {}
 				Objs.iter(this.__wrappers, function (wrapper) {
-					wrapper.destroy();
+					wrapper.weakDestroy();
 				});
 				Objs.iter(this.__staticWrappers, function (wrapper) {
-					wrapper.destroy();
+					wrapper.weakDestroy();
 				});
 				this.__container.html("");
 				if (this.__helper_container)
