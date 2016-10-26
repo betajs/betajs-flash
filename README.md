@@ -1,4 +1,4 @@
-# betajs-flash 0.0.16
+# betajs-flash 0.0.17
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-flash/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-flash)
 
 

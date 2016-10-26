@@ -49,7 +49,7 @@ Scoped.define("module:FlashEmbedding", [ "base:Class", "base:Events.EventsMixin"
 					container = container.get(0);
 				}
 				this.__container = $(container);
-				this.__embedding = FlashHelper.embedFlashObject(container, flashOptions);
+				this.__embedding = FlashHelper.embedFlashObject(this.__container.get(0), flashOptions);
 				this.__suspendedTimer = this.auto_destroy(new Timer({
 					delay: 50,
 					context: this,
