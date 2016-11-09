@@ -1,5 +1,5 @@
 /*!
-betajs-shims - v0.0.7 - 2016-10-17
+betajs-shims - v0.0.10 - 2016-11-06
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -200,7 +200,23 @@ Apache-2.0 Software License.
 		}
 	};
 	this.dispatchEvent = this.dispatchEvent || function (eventObject) {
-		return this.fireEvent("on" + eventObject.type, eventObject);
+		var type = eventObject.type;
+		var onEvent = "on" + type;
+		try {
+			return this.fireEvent(onEvent, eventObject);
+		} catch (e) {
+			var E = Element;
+			try {
+				E = HTMLElement;
+			} catch (e) {}
+			if (onEvent in E.prototype)
+				throw e;
+			if (this.__eventlisteners && this.__eventlisteners[type]) {
+				for (var i = 0; i < this.__eventlisteners[type].length; ++i) {
+					this.__eventlisteners[type][i].wrapper.call(this, eventObject);
+				}
+			}
+		}
 	};
 }).call((function () {
 	try {
@@ -233,6 +249,27 @@ Apache-2.0 Software License.
 }).call((function () {
 	try {
 		return Window.prototype;
+	} catch (e) {
+		return null;
+	}
+}).call(this));
+
+(function() {
+	if (!this || !Object.defineProperty || !Object.getOwnPropertyDescriptor || Object.getOwnPropertyDescriptor(this, "outerHTML"))
+		return;
+    Object.defineProperty(this, "outerHTML", {
+       get: function() {
+    	   var temp = document.createElement("div");
+    	   temp.appendChild(this.cloneNode(true));
+    	   var result = temp.innerHTML;
+    	   if (temp.remove)
+    		   temp.remove();
+    	   return result;
+       }
+   });
+}).call((function () {
+	try {
+		return Element.prototype;
 	} catch (e) {
 		return null;
 	}

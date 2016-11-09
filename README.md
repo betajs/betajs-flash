@@ -14,7 +14,6 @@ You can use the library in the browser and compile it as well.
 #### Browser
 
 ```javascript
-	<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 	<script src="betajs/dist/betajs.min.js"></script>
 	<script src="betajs-browser/dist/betajs-browser.min.js"></script>
 	<script src="betajs-flash/dist/betajs-flash.min.js"></script>
@@ -123,13 +122,13 @@ You can use the library in the browser and compile it as well.
 | Name | URL |
 | :----- | -------: |
 | betajs-scoped | [Open](https://github.com/betajs/betajs-scoped) |
+| betajs-shims | [Open](https://github.com/betajs/betajs-shims) |
 
 
-## Contributors
+## Main Contributors
 
 - Ziggeo
 - Oliver Friedmann
-
 
 ## License
 
@@ -140,3 +139,13 @@ Apache-2.0
 
 This software may include modified and unmodified portions of:
 - AS3CoreLib, BSD License, (c) 2008, Adobe Systems Incorporated
+
+
+
+
+## Sponsors
+
+- Ziggeo
+- Browserstack
+
+

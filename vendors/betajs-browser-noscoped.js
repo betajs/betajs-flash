@@ -1,5 +1,5 @@
 /*!
-betajs-browser - v1.0.47 - 2016-10-24
+betajs-browser - v1.0.50 - 2016-11-06
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -8,12 +8,11 @@ Apache-2.0 Software License.
 var Scoped = this.subScope();
 Scoped.binding('module', 'global:BetaJS.Browser');
 Scoped.binding('base', 'global:BetaJS');
-Scoped.binding('jquery', 'global:jQuery');
 Scoped.binding('resumablejs', 'global:Resumable');
 Scoped.define("module:", function () {
 	return {
     "guid": "02450b15-9bbf-4be2-b8f6-b483bc015d06",
-    "version": "98.1477333615063"
+    "version": "102.1478470033492"
 };
 });
 Scoped.assumeVersion('base:version', 531);
@@ -1084,8 +1083,8 @@ Scoped.define("module:Info", [
 		
 		__cache: {},
 		
-		__cached: function (key, value_func) {
-			if (!(key in this.__cache)) {
+		__cached: function (key, value_func, force) {
+			if (!(key in this.__cache) || force) {
 				var n = this.getNavigator();
 				this.__cache[key] = value_func.call(this, n, n.userAgent, n.userAgent.toLowerCase());
 			}
@@ -1103,10 +1102,10 @@ Scoped.define("module:Info", [
 			});
 		},
 	
-		flash: function () {
+		flash: function (force) {
 			return this.__cached("flash", function () {
 				return new FlashDetect();
-			});
+			}, force);
 		},
 		
 		isiOS: function () {
@@ -1670,10 +1669,9 @@ Scoped.define("module:LocationRouteBinder", [
 });
 
 Scoped.define("module:Dom", [
-    "jquery:",
     "base:Types",
     "module:Info"
-], function ($, Types, Info) {
+], function (Types, Info) {
 	return {
 		
 		changeTag: function (node, name) {
@@ -1737,80 +1735,133 @@ Scoped.define("module:Dom", [
 		
 		elementOnFullscreenChange: function (element, callback, context) {
 			var self = this;
+			var listener = function () {
+				callback.call(context || this, element, self.elementIsFullscreen(element));
+			};
 			this.__FULLSCREEN_EVENTS.forEach(function (event) {
-				element.addEventListener(event, function () {
-					callback.call(context || this, element, self.elementIsFullscreen(element));
-				}, false);
+				element.addEventListener(event, listener, false);
 			});
+			return listener;
 		},
 		
-		elementOffFullscreenChange: function (element) {
+		elementOffFullscreenChange: function (element, listener) {
 			this.__FULLSCREEN_EVENTS.forEach(function (event) {
-				element.removeEventListener(event, false);
+				element.removeEventListener(event, listener, false);
 			});
 		},
 
-		
-		/* Rest depends on jQuery */
-		
-		outerHTML: function (element) {
-           if (!Info.isFirefox() || Info.firefoxVersion() >= 11)
-               return element.outerHTML;
-           return $('<div>').append($(element).clone()).html();
-        },
-			              
-		unbox: function (element) {
-			return $(element).get(0);
-		},
-		
-		elementOffset: function (element) {
-			return $(element).offset();
-		},
-		
-		elementDimensions: function (element) {
-			return {
-				width: $(element).width(),
-				height: $(element).height()
-			};
-		},
-		
-		triggerDomEvent: function (element, eventName) {
-			$(element).trigger(eventName);
-		},
-		
-		remove_tag_from_parent_path: function (node, tag, context) {	
-			tag = tag.toLowerCase();
-			node = $(node);
-			var parents = node.parents(context ? context + " " + tag : tag);
-			for (var i = 0; i < parents.length; ++i) {
-				var parent = parents.get(i);
-				parent = $(parent);
-				while (node.get(0) != parent.get(0)) {
-					this.contentSiblings(node.get(0)).wrap("<" + tag + "></" + tag + ">");
-					node = node.parent();
-				}
-				parent.contents().unwrap();
-			}
-		},
-		
 		entitiesToUnicode: function (s) {
 			if (!s || !Types.is_string(s) || s.indexOf("&") < 0)
 				return s;
 			var temp = document.createElement("span");
 			temp.innerHTML = s;
-			s = $(temp).text();
+			s = temp.textContent || temp.innerText;
 			if (temp.remove)
 				temp.remove();
 			return s;
 		},
 		
-		contentSiblings: function (node) {
-			return $(node.parentNode).contents().filter(function () {
-				return this != node.get(0);
-			});
+		unbox: function (element) {
+			return !element || element.nodeType ? element : element.get(0);
+		},
+		
+		triggerDomEvent: function (element, eventName) {
+			element = this.unbox(element);
+			eventName = eventName.toLowerCase();
+			var onEvent = "on" + eventName;
+			var onEventHandler = null;
+			var onEventCalled = false;
+			if (element[onEvent]) {
+				onEventHandler = element[onEvent];
+				element[onEvent] = function () {
+					if (onEventCalled)
+						return;
+					onEventCalled = true;
+					onEventHandler.apply(this, arguments);
+				};
+			}
+			try {
+				var event;
+				try {
+					event = new Event(eventName);
+				} catch (e) {
+					try {
+						event = document.createEvent('Event');
+						event.initEvent(eventName, false, false);
+					} catch (e) {
+						event = document.createEventObject();
+						event.type = eventName;
+					}
+				}
+				element.dispatchEvent(event);
+				if (onEventHandler) {
+					if (!onEventCalled)
+						onEventHandler.call(element, event);
+					element[onEvent] = onEventHandler;
+				}
+			} catch (e) {
+				if (onEventHandler)
+					element[onEvent] = onEventHandler;
+				throw e;
+			}
+		},
+		
+		elementOffset: function (element) {
+			element = this.unbox(element);
+			var top = 0;
+			var left = 0;
+			if (element.getBoundingClientRect) {
+				var box = element.getBoundingClientRect();
+				top = box.top;
+				left = box.left;
+			}
+			docElem = document.documentElement;
+			return {
+				top: top + (window.pageYOffset || docElem.scrollTop) - (docElem.clientTop || 0),
+				left: left + (window.pageXOffset || docElem.scrollLeft) - (docElem.clientLeft || 0)
+			};
+		},
+		
+		elementDimensions: function (element) {
+			element = this.unbox(element);
+			var cs, w, h;
+			if (window.getComputedStyle) {
+				cs = window.getComputedStyle(element);
+				w = parseInt(cs.width, 10);
+				h = parseInt(cs.height, 10);
+				if (w && h) {
+					return {
+						width: w,
+						height: h
+					};
+				}
+			}
+			if (element.currentStyle) {
+				cs = element.currentStyle;
+				w = element.clientWidth - parseInt(cs.paddingLeft || 0, 10) - parseInt(cs.paddingRight || 0, 10);
+				h = element.clientHeight - parseInt(cs.paddingTop || 0, 10) - parseInt(cs.paddingTop || 0, 10);
+				if (w && h) {
+					return {
+						width: w,
+						height: h
+					};
+				}
+			}
+			if (element.getBoundingClientRect) {
+				var box = element.getBoundingClientRect();
+				h = box.bottom - box.top;
+				w = box.right - box.left;
+				return {
+					width: w,
+					height: h
+				};
+			}
+			return {
+				width: 0,
+				height: 0
+			};
 		}
 		
-				
 	};
 });
 Scoped.define("module:DomExtend.DomExtension", [
@@ -1904,7 +1955,7 @@ Scoped.define("module:DomExtend.DomExtension", [
 					this._element.style.width = idealBB.width + "px";
 					width = Dom.elementDimensions(this._element).width;
 					var current = this._element;
-					while (current != document) {
+					while (current != document.body) {
 						current = current.parentNode;
 						width = Math.min(width, Dom.elementDimensions(current).width);
 					}
@@ -2574,7 +2625,7 @@ Scoped.define("module:Upload.CustomUploader", [
 Scoped.define("module:Upload.FormDataFileUploader", [
     "module:Upload.FileUploader",
     "module:Info",
-    "base:Ajax.Support:",
+    "base:Ajax.Support",
     "base:Objs"
 ], function (FileUploader, Info, AjaxSupport, Objs, scoped) {
 	return FileUploader.extend({scoped: scoped}, {
@@ -2797,8 +2848,8 @@ Scoped.define("module:Upload.ResumableFileUploader", [
     "resumablejs:",
     "base:Async",
     "base:Objs",
-    "jquery:"
-], function (FileUploader, ResumableJS, Async, Objs, $, scoped) {
+    "base:Ajax.Support"
+], function (FileUploader, ResumableJS, Async, Objs, AjaxSupport, scoped) {
 	return FileUploader.extend({scoped: scoped}, {
 		
 		_upload: function () {
@@ -2829,31 +2880,26 @@ Scoped.define("module:Upload.ResumableFileUploader", [
 		_resumableSuccessCallback: function (file, message, resilience) {
 			if (resilience <= 0)
 				this._errorCallback(message);
-			var self = this;
-			$.ajax({
-				type: "POST",
-				async: true,
-				url: this._options.resumable.assembleUrl,
-				dataType: null, 
+			AjaxSupport.execute({
+				method: "POST",
+				uri: this._options.resumable.assembleUrl,
 				data: Objs.extend({
 					resumableIdentifier: file.file.uniqueIdentifier,
 					resumableFilename: file.file.fileName || file.file.name,
 					resumableTotalSize: file.file.size,
 					resumableType: file.file.type
-				}, this._options.data),
-				success: function (response) {
-					self._successCallback(message);
-				},
-				error: function (jqXHR, textStatus, errorThrown) {
-					if (self._options.resumable.acceptedAssembleError && self._options.resumable.acceptedAssembleError == jqXHR.status) {
-						self._successCallback(message);
-						return;
-					}
-					Async.eventually(function () {
-						self._resumableSuccessCallback(file, message, resilience - 1);
-					}, self._options.resumable.assembleResilienceTimeout || 0);
+				}, this._options.data)
+			}).success(function () {
+				this._successCallback(message);
+			}, this).error(function (e) {
+				if (this._options.resumable.acceptedAssembleError && this._options.resumable.acceptedAssembleError == e.status_code()) {
+					this._successCallback(message);
+					return;
 				}
-			});
+				Async.eventually(function () {
+					this._resumableSuccessCallback(file, message, resilience - 1);
+				}, this, this._options.resumable.assembleResilienceTimeout || 0);
+			}, this);
 		}
 		
 	}, {

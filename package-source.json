@@ -29,6 +29,7 @@
 		"url": "git://github.com/betajs/betajs-flash.git"
 	},
 	"meta": {
+		"sponsors": ["Ziggeo", "Browserstack"],
 		"guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
 		"installdoc": "docsrc/common/install.md",
 		"summarydoc": "docsrc/common/summary.md",
@@ -49,7 +50,7 @@
 			"AS3CoreLib, BSD License, (c) 2008, Adobe Systems Incorporated"
 		],
 		"compatability": {
-			"Firefox": "4 - Latest",
+			"Firefox": "6 - Latest",
 			"Chrome": "18 - Latest",
 			"Safari": "5 - Latest",
 			"Opera": "18 - Latest",
