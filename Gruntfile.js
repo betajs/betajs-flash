@@ -25,8 +25,7 @@ module.exports = function(grunt) {
     /* Testing */
     .browserqunitTask(null, "tests/tests.html", true)
     .closureTask(null, ["./vendors/scoped.js", "./vendors/beta-noscoped.js",  "./vendors/betajs-browser-noscoped.js", "./dist/betajs-flash-noscoped.js" ], null, { })
-    .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: false})
-    .browserstackTask(null, 'tests/tests.html', {desktop: false, mobile: true})
+    .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: true, flash: true})
     .lintTask(null, ['./src/**/*.js', './dist/' + dist + '-noscoped.js', './dist/' + dist + '.js', './Gruntfile.js', './tests/**/*.js'])
     
     /* External Configurations */

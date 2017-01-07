@@ -1,5 +1,5 @@
 /*!
-betajs-browser - v1.0.50 - 2016-11-06
+betajs-browser - v1.0.52 - 2016-11-14
 Copyright (c) Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -12,7 +12,7 @@ Scoped.binding('resumablejs', 'global:Resumable');
 Scoped.define("module:", function () {
 	return {
     "guid": "02450b15-9bbf-4be2-b8f6-b483bc015d06",
-    "version": "102.1478470033492"
+    "version": "104.1479178758221"
 };
 });
 Scoped.assumeVersion('base:version', 531);
@@ -568,44 +568,55 @@ Scoped.define("module:Events", [
 			},
 			
 			destroy: function () {
+				this.clear();
+				inherited.destroy.call(this);
+			},
+			
+			on: function (element, events, callback, context) {
+				events.split(" ").forEach(function (event) {
+					if (!event)
+						return;
+					var callback_function = Functions.as_method(callback, context || element);
+					element.addEventListener(event, callback_function, false);
+					this.__callbacks[event] = this.__callbacks[event] || [];
+					this.__callbacks[event].push({
+						element: element,
+						callback_function: callback_function,
+						callback: callback,
+						context: context
+					});
+				}, this);
+				return this;
+			},
+			
+			off: function (element, events, callback, context) {
+				events.split(" ").forEach(function (event) {
+					if (!event)
+						return;
+					var entries = this.__callbacks[event];
+					if (entries) {
+						var i = 0;
+						while (i < entries.length) {
+							var entry = entries[i];
+							if ((!element || element == entry.element) && (!callback || callback == entry.callback) && (!context || context == entry.context)) {
+								entry.element.removeEventListener(event, entry.callback_function, false);
+								entries[i] = entries[entries.length - 1];
+								entries.pop();
+							} else
+								++i;
+						}
+					}
+				}, this);
+				return this;
+			},
+			
+			clear: function () {
 				Objs.iter(this.__callbacks, function (entries, event) {
 					entries.forEach(function (entry) {
 						entry.element.removeEventListener(event, entry.callback_function, false);
 					});
 				});
-				inherited.destroy.call(this);
-			},
-			
-			on: function (element, event, callback, context) {
-				var callback_function = callback;
-				if (context)
-					callback_function = Functions.as_method(callback, context);
-				element.addEventListener(event, callback_function, false);
-				this.__callbacks[event] = this.__callbacks[event] || [];
-				this.__callbacks[event].push({
-					element: element,
-					callback_function: callback_function,
-					callback: callback,
-					context: context
-				});
-				return this;
-			},
-			
-			off: function (element, event, callback, context) {
-				var entries = this.__callbacks[event];
-				if (entries) {
-					var i = 0;
-					while (i < entries.length) {
-						var entry = entries[i];
-						if ((!element || element == entry.element) && (!callback || callback == entry.callback) && (!context || context == entry.context)) {
-							entry.element.removeEventListener(event, entry.callback_function, false);
-							entries[i] = entries[entries.length - 1];
-							entries.pop();
-						} else
-							++i;
-					}
-				}
-				return this;
+				this.__callbacks = {};
 			}
 			
 		};
@@ -1195,6 +1206,19 @@ Scoped.define("module:Info", [
 			});
 		},
 		
+		androidVersion: function () {
+			return this.__cached("androidVersion", function (nav) {
+				if (!this.isAndroid())
+					return false;
+			    var v = (nav.userAgent).match(/Android (\d+)\.(\d+)\.?(\d+)?/);
+			    return {
+			    	major: parseInt(v[1], 10),
+			    	minor: parseInt(v[2], 10),
+			    	revision: parseInt(v[3] || 0, 10)
+			    };
+			});
+		},
+
 		isMobile: function () {
 			return this.__cached("isMobile", function () {
 				return this.isiOS() || this.isAndroid() || this.isWebOS() || this.isWindowsPhone() || this.isBlackberry();
@@ -1682,7 +1706,8 @@ Scoped.define("module:Dom", [
 			}
 		    while (node.firstChild)
 		        replacement.appendChild(node.firstChild);
-		    node.parentNode.replaceChild(replacement, node);
+		    if (node.parentNode)
+		    	node.parentNode.replaceChild(replacement, node);
 			return replacement;
 		},		
 		

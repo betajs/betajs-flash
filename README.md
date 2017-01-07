@@ -78,19 +78,20 @@ You can use the library in the browser and compile it as well.
 | :--------- | --: |
 | Homepage   | [http://betajs.com](http://betajs.com) |
 | Git        | [git://github.com/betajs/betajs-flash.git](git://github.com/betajs/betajs-flash.git) |
-| Repository | [http://github.com/betajs/betajs-flash](http://github.com/betajs/betajs-flash) |
+| Repository | [https://github.com/betajs/betajs-flash](https://github.com/betajs/betajs-flash) |
 | Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
 | Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
+ 
 
 
 
 ## Compatability
 | Target | Versions |
 | :----- | -------: |
-| Firefox | 4 - Latest |
+| Firefox | 6 - Latest |
 | Chrome | 18 - Latest |
 | Safari | 5 - Latest |
-| Opera | 18 - Latest |
+| Opera | 16 - Latest |
 | Internet Explorer | 8 - Latest |
 | Edge | 12 - Latest |
 

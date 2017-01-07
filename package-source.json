@@ -36,7 +36,7 @@
 		"badges": {
 			"codeclimate": true,
 			"travis": false,
-			"npm": false
+			"npm": true
 		},
 		"weakDependencies": {
 			"betajs-scoped": "https://github.com/betajs/betajs-scoped",
@@ -53,7 +53,7 @@
 			"Firefox": "6 - Latest",
 			"Chrome": "18 - Latest",
 			"Safari": "5 - Latest",
-			"Opera": "18 - Latest",
+			"Opera": "16 - Latest",
 			"Internet Explorer": "8 - Latest",
 			"Edge": "12 - Latest"
 		},
