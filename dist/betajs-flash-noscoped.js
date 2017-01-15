@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.17 - 2016-11-06
+betajs-flash - v0.0.18 - 2017-01-15
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -12,11 +12,11 @@ Scoped.binding('browser', 'global:BetaJS.Browser');
 Scoped.define("module:", function () {
 	return {
     "guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-    "version": "36.1478491081003"
+    "version": "0.0.18"
 };
 });
-Scoped.assumeVersion('base:version', 444);
-Scoped.assumeVersion('browser:version', 58);
+Scoped.assumeVersion('base:version', '~1.0.96');
+Scoped.assumeVersion('browser:version', '~1.0.61');
 Scoped.extend("module:", ["module:"], function () {
 	return {
 		options: {

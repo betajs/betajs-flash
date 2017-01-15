@@ -1,6 +1,6 @@
 {
 	"name": "betajs-flash",
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"description": "BetaJS-Flash is a Flash-JavaScript bridging framework",
 	"contributors": ["Ziggeo", "Oliver Friedmann"],
 	"devDependencies": {
@@ -11,19 +11,21 @@
 		"grunt-contrib-uglify": "",
 		"grunt-contrib-clean": "",
 		"grunt-preprocess": "",
-		"grunt-git-revision-count": "",
 		"grunt-closure-tools": "",
 		"grunt-node-qunit": "",
 		"qunit": "",
 		"grunt-contrib-connect": "",
-		"grunt-wget": "",
 		"grunt-jsdoc": "",
 		"grunt-shell": "",
 		"grunt-template": "",
-		"grunt-betajs-docs-compile": "",
-		"betajs-scoped": "",
-		"betajs-compile": "betajs/betajs-compile"
+	    "grunt-betajs-docs-compile":"~0.0.19",
+	    "betajs-scoped": "~0.0.13",
+	    "betajs-compile": "~0.0.28",
+		"betajs-shims": "~0.0.12",
+	    "betajs": "~1.0.96",
+	    "betajs-browser": "~1.0.61"
 	},
+	"main": "dist/betajs-flash.js",
 	"repository": {
 		"type": "git",
 		"url": "git://github.com/betajs/betajs-flash.git"

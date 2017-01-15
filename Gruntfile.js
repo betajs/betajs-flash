@@ -1,7 +1,7 @@
 module.exports = function(grunt) {
 
 	var pkg = grunt.file.readJSON('package.json');
-	var gruntHelper = require('betajs-compile/grunt.js');
+	var gruntHelper = require('betajs-compile');
 	var dist = 'betajs-flash';
 
 	gruntHelper.init(pkg, grunt)
@@ -14,31 +14,23 @@ module.exports = function(grunt) {
 		"base": "global:BetaJS",
 		"browser": "global:BetaJS.Browser"
     }, {
-    	"base:version": 444,
-    	"browser:version": 58
+    	"base:version": pkg.devDependencies.betajs,
+    	"browser:version": pkg.devDependencies["betajs-browser"]
     })	
-    .concatTask('concat-scoped', ['vendors/scoped.js', 'dist/' + dist + '-noscoped.js'], 'dist/' + dist + '.js')
+    .concatTask('concat-scoped', [require.resolve("betajs-scoped"), 'dist/' + dist + '-noscoped.js'], 'dist/' + dist + '.js')
     .uglifyTask('uglify-noscoped', 'dist/' + dist + '-noscoped.js', 'dist/' + dist + '-noscoped.min.js')
     .uglifyTask('uglify-scoped', 'dist/' + dist + '.js', 'dist/' + dist + '.min.js')
     .packageTask()
 
     /* Testing */
     .browserqunitTask(null, "tests/tests.html", true)
-    .closureTask(null, ["./vendors/scoped.js", "./vendors/beta-noscoped.js",  "./vendors/betajs-browser-noscoped.js", "./dist/betajs-flash-noscoped.js" ], null, { })
+    .closureTask(null, [require.resolve("betajs-scoped"), require.resolve("betajs"), require.resolve("betajs-browser"), "./dist/betajs-flash-noscoped.js" ], null, { })
     .browserstackTask(null, 'tests/tests.html', {desktop: true, mobile: true, flash: true})
     .lintTask(null, ['./src/**/*.js', './dist/' + dist + '-noscoped.js', './dist/' + dist + '.js', './Gruntfile.js', './tests/**/*.js'])
     
     /* External Configurations */
     .codeclimateTask()
     
-    /* Dependencies */
-    .dependenciesTask(null, { github: [
-        'betajs/betajs-scoped/dist/scoped.js',
-        'betajs/betajs/dist/beta-noscoped.js',
-        'betajs/betajs-browser/dist/betajs-browser-noscoped.js',
-        'betajs/betajs-shims/dist/betajs-shims.js'
-     ] })
-
     /* Markdown Files */
 	.readmeTask()
     .licenseTask()
