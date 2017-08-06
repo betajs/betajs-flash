@@ -1,7 +1,7 @@
 # betajs-flash 0.0.18
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-flash/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-flash)
 [![NPM](https://img.shields.io/npm/v/betajs-flash.svg?style=flat)](https://www.npmjs.com/package/betajs-flash)
-
+[![Gitter Chat](https://badges.gitter.im/betajs/betajs-flash.svg)](https://gitter.im/betajs/betajs-flash)
 
 BetaJS-Flash is a Flash-JavaScript bridging framework
 
@@ -82,7 +82,7 @@ You can use the library in the browser and compile it as well.
 | Repository | [https://github.com/betajs/betajs-flash](https://github.com/betajs/betajs-flash) |
 | Blog       | [http://blog.betajs.com](http://blog.betajs.com) | 
 | Twitter    | [http://twitter.com/thebetajs](http://twitter.com/thebetajs) | 
- 
+| Gitter     | [https://gitter.im/betajs/betajs-flash](https://gitter.im/betajs/betajs-flash) | 
 
 
 
@@ -94,6 +94,7 @@ You can use the library in the browser and compile it as well.
 | Safari | 5 - Latest |
 | Opera | 16 - Latest |
 | Internet Explorer | 8 - Latest |
+| Yandex | Latest |
 | Edge | 12 - Latest |
 
 

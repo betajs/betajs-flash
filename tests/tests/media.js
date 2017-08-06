@@ -1,13 +1,13 @@
-test("test playback mp4", function() {
+QUnit.test("test playback mp4", function(assert) {
 	var flashFile = window.BrowserStack ? "//files.betajs.com/betajs-flash.swf" : "../dist/betajs-flash.swf";
 	var videoFile = window.BrowserStack ? "http://files.betajs.com/movie.mp4" : document.location + "/../tests/movie.mp4";
-	stop();
+	var done = assert.async();
 	var registry = new BetaJS.Flash.FlashClassRegistry();
 	registry.register("flash.media.Video", ["attachNetStream"]);
 	registry.register("flash.display.Sprite", ["addChild"]);
 	registry.register("flash.net.NetStream", ["play", "addEventListener"]);
 	registry.register("flash.net.NetConnection", ["connect", "addEventListener"]);
-	var embedding = new BetaJS.Flash.FlashEmbedding($("#visible-fixture"), {
+	var embedding = new BetaJS.Flash.FlashEmbedding(document.getElementById("visible-fixture"), {
 		registry: registry,
 		wrap: true
 	}, {
@@ -25,9 +25,9 @@ test("test playback mp4", function() {
 		var cb = embedding.newCallback(function () {
 			var stream = embedding.newObject("flash.net.NetStream", connection);
 			stream.set("client", embedding.newCallback("onMetaData", function (info) {
-				QUnit.equal(info.width, 640);
-				QUnit.equal(info.height, 360);
-				start();
+                assert.equal(info.width, 640);
+                assert.equal(info.height, 360);
+				done();
 				embedding.destroy();
 			}));
 			

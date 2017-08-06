@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
         <script src="../node_modules/betajs-scoped/dist/scoped.js"></script>
         <script src="../node_modules/betajs/dist/beta-noscoped.js"></script>
         <script src="../node_modules/betajs-browser/dist/betajs-browser-noscoped.js"></script>
@@ -23,10 +22,9 @@
 				flashFile: "../dist/betajs-flash.swf",
 				forceReload: true
 			});
-			
-//			$("embed").css("width", "640px");
-	//		$("embed").css("height", "360px");
-			$("embed").css("border", "2px solid orange");
+
+			var embed = document.querySelector("embed");
+			embed.style.border = "2px solid orange";
 			
 			embedding.ready(function () {
 				var main = embedding.flashMain();
@@ -40,14 +38,13 @@
 					var stream = embedding.newObject("flash.net.NetStream", connection);
 					
 					stream.set("client", embedding.newCallback("onMetaData", function (info) {
-						$("body").append("<p>" + JSON.stringify(info) + "</p>");
-						$("embed").css("width", info.width + "px");
-						$("embed").css("height", info.height + "px");
+						document.body.appendChild(BetaJS.Browser.Dom.elementByTemplate("<p>" + JSON.stringify(info) + "</p>"));
+						embed.style.width = info.width + "px";
+						embed.style.height = info.height + "px";
 						setTimeout(function () {
 							video.set("width", stage.get("stageWidth"));
 							video.set("height", stage.get("stageHeight"));
 						}, 0);
-						//$("embed").css("border", "2px solid orange");
 					}));
 					
 					stream.addEventListener("netStatus", embedding.newCallback(function (event) {

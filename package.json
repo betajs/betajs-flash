@@ -30,8 +30,6 @@
         "grunt-contrib-clean": "",
         "grunt-preprocess": "",
         "grunt-closure-tools": "",
-        "grunt-node-qunit": "",
-        "qunit": "",
         "grunt-contrib-connect": "",
         "grunt-jsdoc": "",
         "grunt-shell": "",
@@ -61,7 +59,8 @@
         "badges": {
             "codeclimate": true,
             "travis": false,
-            "npm": true
+            "npm": true,
+            "gitter": true
         },
         "weakDependencies": {
             "betajs-scoped": "https://github.com/betajs/betajs-scoped",
@@ -80,6 +79,7 @@
             "Safari": "5 - Latest",
             "Opera": "16 - Latest",
             "Internet Explorer": "8 - Latest",
+            "Yandex": "Latest",
             "Edge": "12 - Latest"
         },
         "tests": {
