@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.18 - 2017-01-15
+betajs-flash - v0.0.19 - 2017-10-12
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -12,7 +12,7 @@ Scoped.binding('browser', 'global:BetaJS.Browser');
 Scoped.define("module:", function () {
 	return {
     "guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-    "version": "0.0.18"
+    "version": "0.0.19"
 };
 });
 Scoped.assumeVersion('base:version', '~1.0.96');
@@ -37,11 +37,12 @@ Scoped.define("module:FlashEmbedding", [
 				options = options || {};
 				this.__registry = options.registry;
 				this.__wrap = options.wrap;
+				this.__hasEmbedding = options.hasEmbedding;
 				this.__cache = {};
 				this.__callbacks = {
 					ready: Functions.as_method(this.__ready, this)
 				};
-				this.__namespace = "flash_" + Tokens.generate_token();
+				this.__namespace = options.namespace ? options.namespace : ("flash_" + Tokens.generate_token());
 				this.__is_ready = false;
 				this.__is_suspended = false;
 				this.__throttle_status = "";
@@ -66,7 +67,7 @@ Scoped.define("module:FlashEmbedding", [
 					document.body.appendChild(container);
 				}
 				this.__container = Dom.unbox(container);
-				this.__embedding = FlashHelper.embedFlashObject(this.__container, flashOptions);
+				this.__embedding = options.hasEmbedding ? FlashHelper.getFlashObject(this.__container) : FlashHelper.embedFlashObject(this.__container, flashOptions);
 				this.__suspendedTimer = this.auto_destroy(new Timer({
 					delay: 50,
 					context: this,
@@ -85,9 +86,11 @@ Scoped.define("module:FlashEmbedding", [
 				Objs.iter(this.__staticWrappers, function (wrapper) {
 					wrapper.weakDestroy();
 				});
-				this.__container.innerHTML = "";
-				if (this.__helper_container)
-					this.__container.parentNode.removeChild(this.__container);
+				if (!this.__hasEmbedding) {
+                    this.__container.innerHTML = "";
+                    if (this.__helper_container)
+                        this.__container.parentNode.removeChild(this.__container);
+				}
 				inherited.destroy.call(this);
 			},
 			
