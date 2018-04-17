@@ -41,6 +41,9 @@
         "betajs": "~1.0.96",
         "betajs-browser": "~1.0.61"
     },
+    "scripts": {
+        "relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped && npm link betajs-shims && npm link betajs-browser"
+    },
     "main": "dist/betajs-flash.js",
     "repository": {
         "type": "git",

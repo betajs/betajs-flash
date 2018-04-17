@@ -28,6 +28,9 @@
 		"type": "git",
 		"url": "git://github.com/betajs/betajs-flash.git"
 	},
+	"scripts": {
+		"relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped && npm link betajs-shims && npm link betajs-browser"
+	},
 	"meta": {
 		"sponsors": ["Ziggeo", "Browserstack"],
 		"guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",

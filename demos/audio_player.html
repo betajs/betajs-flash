@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+        <script src="../node_modules/betajs-scoped/dist/scoped.js"></script>
+        <script src="../node_modules/betajs/dist/beta-noscoped.js"></script>
+        <script src="../node_modules/betajs-browser/dist/betajs-browser-noscoped.js"></script>
+		<script src="../dist/betajs-flash-noscoped.js"></script>
+	</head>
+	<body>
+	
+		<script>
+			var registry = new BetaJS.Flash.FlashClassRegistry();
+			registry.register("flash.display.Sprite", ["addChild"]);
+			registry.register("flash.net.URLRequest", []);
+			registry.register("flash.media.Sound", ["load", "play", "addEventListener"]);
+
+			var embedding = new BetaJS.Flash.FlashEmbedding(document.body, {
+				registry: registry,
+				wrap: true
+			}, {
+				flashFile: "../dist/betajs-flash.swf",
+				forceReload: true
+			});
+
+			var embed = document.querySelector("embed");
+			embed.style.border = "2px solid orange";
+			
+			embedding.ready(function () {
+				var main = embedding.flashMain();
+				var stage = main.get("stage");
+				stage.set("scaleMode", "noScale");
+				stage.set("align", "TL");
+                var sound = embedding.newObject("flash.media.Sound");
+                sound.addEventListener("complete", embedding.newCallback(function () {
+					sound.playVoid();
+				}));
+                var urlRequest = embedding.newObject("flash.net.URLRequest", "../demos/audio.mp3");
+                sound.loadVoid(urlRequest);
+			});
+		</script>
+	</body>
+</html>
