@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.19 - 2017-10-12
+betajs-flash - v0.0.19 - 2018-07-08
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -341,7 +341,9 @@ Scoped.define("module:FlashObjectWrapper", [ "base:Class", "base:Objs", "base:Fu
 			},
 			
 			destroy: function () {
-				this.__embedding.flashDestroy(this.__ident);
+				try {
+                    this.__embedding.flashDestroy(this.__ident);
+                } catch (e) {}
 				inherited.destroy.call(this);
 			},
 			

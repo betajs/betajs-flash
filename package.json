@@ -1,5 +1,5 @@
 {
-    "homepage": "http://betajs.com",
+    "homepage": "https://betajs.com",
     "license": "Apache-2.0",
     "licenses": [
         {
@@ -41,17 +41,17 @@
         "betajs": "~1.0.96",
         "betajs-browser": "~1.0.61"
     },
-    "scripts": {
-        "relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped && npm link betajs-shims && npm link betajs-browser"
-    },
     "main": "dist/betajs-flash.js",
     "repository": {
         "type": "git",
         "url": "git://github.com/betajs/betajs-flash.git"
     },
+    "scripts": {
+        "relink": "npm link betajs && npm link betajs-compile && npm link betajs-scoped && npm link betajs-shims && npm link betajs-browser"
+    },
     "meta": {
-        "blog": "http://blog.betajs.com",
-        "twitter": "http://twitter.com/thebetajs",
+        "blog": "https://blog.betajs.com",
+        "twitter": "https://twitter.com/thebetajs",
         "sponsors": [
             "Ziggeo",
             "Browserstack"

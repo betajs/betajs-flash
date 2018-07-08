@@ -31,7 +31,9 @@ Scoped.define("module:FlashObjectWrapper", [ "base:Class", "base:Objs", "base:Fu
 			},
 			
 			destroy: function () {
-				this.__embedding.flashDestroy(this.__ident);
+				try {
+                    this.__embedding.flashDestroy(this.__ident);
+                } catch (e) {}
 				inherited.destroy.call(this);
 			},
 			
