@@ -1,5 +1,5 @@
 /*!
-betajs-flash - v0.0.19 - 2018-07-08
+betajs-flash - v0.0.20 - 2018-07-08
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -1006,7 +1006,7 @@ Public.exports();
 	return Public;
 }).call(this);
 /*!
-betajs-flash - v0.0.19 - 2018-07-08
+betajs-flash - v0.0.20 - 2018-07-08
 Copyright (c) Ziggeo,Oliver Friedmann
 Apache-2.0 Software License.
 */
@@ -1019,7 +1019,7 @@ Scoped.binding('browser', 'global:BetaJS.Browser');
 Scoped.define("module:", function () {
 	return {
     "guid": "3adc016a-e639-4d1a-b4cb-e90cab02bc4f",
-    "version": "0.0.19"
+    "version": "0.0.20"
 };
 });
 Scoped.assumeVersion('base:version', '~1.0.96');

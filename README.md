@@ -1,4 +1,4 @@
-# betajs-flash 0.0.19
+# betajs-flash 0.0.20
 [![Code Climate](https://codeclimate.com/github/betajs/betajs-flash/badges/gpa.svg)](https://codeclimate.com/github/betajs/betajs-flash)
 [![NPM](https://img.shields.io/npm/v/betajs-flash.svg?style=flat)](https://www.npmjs.com/package/betajs-flash)
 [![Gitter Chat](https://badges.gitter.im/betajs/betajs-flash.svg)](https://gitter.im/betajs/betajs-flash)
