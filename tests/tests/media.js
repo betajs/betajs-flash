@@ -1,6 +1,6 @@
 QUnit.test("test playback mp4", function(assert) {
-	var flashFile = window.BrowserStack ? "//files.betajs.com/betajs-flash.swf" : "../dist/betajs-flash.swf";
-	var videoFile = window.BrowserStack ? "http://files.betajs.com/movie.mp4" : document.location + "/../tests/movie.mp4";
+	var flashFile = window.BrowserStack ? "//betajs.com/betajs-flash.swf" : "../dist/betajs-flash.swf";
+	var videoFile = window.BrowserStack ? "http://betajs.com/movie.mp4" : document.location + "/../tests/movie.mp4";
 	var done = assert.async();
 	var registry = new BetaJS.Flash.FlashClassRegistry();
 	registry.register("flash.media.Video", ["attachNetStream"]);
